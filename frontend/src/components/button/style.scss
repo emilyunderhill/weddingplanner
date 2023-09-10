@@ -1,0 +1,11 @@
+@use '../../styles/colors';
+
+button-primary {
+  fill: $primary;
+  color: white;
+};
+
+button-destructive {
+  fill: $error;
+  
+}
