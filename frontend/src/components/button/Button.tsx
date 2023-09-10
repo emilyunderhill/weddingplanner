@@ -1,4 +1,5 @@
 import { FC, ReactNode } from "react";
+import './style.scss'
 
 type Variants = {
   primary: 'primary',
@@ -26,7 +27,7 @@ const Button: FC<Props> = ({
   isFullWidth
 }) => {
   return (
-    <button className="" onClick={action} disabled={isDisabled}>
+    <button className="button-primary" onClick={action}>
       {content}
     </button>
   )
