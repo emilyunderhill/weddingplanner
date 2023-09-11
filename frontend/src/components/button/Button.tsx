@@ -26,10 +26,23 @@ const Button: FC<Props> = ({
   isDisabled,
   isFullWidth
 }) => {
+  const variantClass = () => {
+    if (isDisabled) {
+      return 'button-disabled'
+    }
+
+    switch (variant) {
+      case 'primary':
+        return 'button-primary'
+      default:
+        break;
+    }
+  }
+
   return (
-    <button className="button-primary" onClick={action}>
+    <div className={`button ${variantClass()} ${isFullWidth ? 'full-width' : ''}`} onClick={action}>
       {content}
-    </button>
+    </div>
   )
 }
 

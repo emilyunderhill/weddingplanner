@@ -6,8 +6,7 @@ import Button from './components/button/Button';
 function App() {
   return (
     <div className="App">
-     
-      <Button content="log in" action={() => null} variant='primary' />
+
     </div>
   );
 }

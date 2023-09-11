@@ -1,7 +1,31 @@
 @import '../../styles/colors';
 
+.button {
+  border-radius: 5px;
+  display: inline-block;
+  text-align: center;
+  justify-content: center;
+  padding: 5px 15px 5px 15px;
+  cursor: pointer;
+}
+.button:hover {
+  filter: brightness(115%);
+}
+
+.full-width {
+  width: 100%;
+}
+
+.button-disabled {
+  background-color: $disabled;
+  color: $text;
+  cursor: not-allowed;
+}
+.button-disabled:hover{
+  filter: none !important;
+}
+
 .button-primary {
-  fill: $primary;
   color: white;
   background-color: $primary;
 };
