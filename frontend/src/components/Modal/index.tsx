@@ -1,6 +1,5 @@
 import { FC, ReactNode, useRef } from "react";
 import './style.scss'
-import Button from "../Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
