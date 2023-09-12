@@ -49,7 +49,6 @@ const Carousel: FC = () => {
           //Only consecutive items are animated to stop animation when moving
           //from front to back of the list
           const distanceFromCenter = getDistanceFromCenter(index)
-          console.log({index, selectedIndex, distanceFromCenter})
           const animate = Math.abs(distanceFromCenter) < 3
 
           return (
