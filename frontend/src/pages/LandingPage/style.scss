@@ -1,31 +1,39 @@
 @import '../../styles/colors';
 
 .carousel-wrapper {
-  position: static;
   height: 50vh;
   background-color: $border;
   padding: 20px;
+  overflow: hidden;
 }
 
-.carousel-grid {
-  width: 100%;
+.carousel-row {
   height: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
+  white-space: nowrap;
+}
+
+.carousel-item-container {
+  height: 100%;
+  display: inline-block;
 }
 
 .carousel-item {
   margin-left: auto;
   margin-right: auto;
-  transition: transform 300ms ease 100ms;
   height: 100%;
-  width: 250px;
+  width: 100%;
+  white-space: pre-wrap;
+  transition: transform 400ms ease 200ms;
+}
+
+.carousel-animation {
+    transition: transform 300ms ease 100ms;
 }
 
 .carousel-item-image {
   height: 80%;
+  width: 100%;
   background-size: cover;
   background-position: center;
   border-radius: 10px;
@@ -35,7 +43,6 @@
   margin-top: 20px;
   text-align: center;
   > p {
-    font-weight: bold;
     color: white;
   }
 }
