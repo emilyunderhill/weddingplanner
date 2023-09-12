@@ -1,6 +1,7 @@
 import React from 'react';
 import Carousel from './components/Carousel'
 import './style.scss'
+import PageContainer from '../../components/PageContainer';
 
 const LandingPage = () => {
   //Carousel
@@ -10,6 +11,9 @@ const LandingPage = () => {
   return (
     <div>
       <Carousel />
+      <PageContainer>
+        <div></div>
+      </PageContainer>
     </div>
   )
 }
