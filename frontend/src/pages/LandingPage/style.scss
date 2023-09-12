@@ -1,38 +1,27 @@
 @import '../../styles/colors';
 
 .carousel-wrapper {
-  width: 100vw;
+  position: static;
   height: 50vh;
   background-color: $border;
+  padding: 20px;
 }
 
 .carousel-grid {
-  display: grid;
-  grid-template-columns: auto auto auto auto auto;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
-
-$primary-carousel-item-height: 50vh;
-$primary-carousel-item-width: 250px;
 
 .carousel-item {
-  margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
-}
-
-.carousel-item-center {
-  height: $primary-carousel-item-height;
-  width: $primary-carousel-item-width;
-}
-
-.carousel-item-secondary {
-  height: 0.8*$primary-carousel-item-height;
-  width: 0.8*$primary-carousel-item-width;
-}
-
-.carousel-item-outside {
-  height: 0.6*$primary-carousel-item-height;
-  width: 0.6*$primary-carousel-item-width;
+  transition: transform 300ms ease 100ms;
+  height: 100%;
+  width: 250px;
 }
 
 .carousel-item-image {

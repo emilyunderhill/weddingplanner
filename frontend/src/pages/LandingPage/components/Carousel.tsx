@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../style.scss'
 import '../../../assets/images/guestlist.jpg'
 import { useState } from 'react'
-import CarouselItem from './CarouselItem'
+import CarouselItem, { Position } from './CarouselItem'
 import guestList from '../../../assets/images/guestlist.jpg'
 import venue from '../../../assets/images/venue.jpg'
 import budget from '../../../assets/images/budget.jpg'
@@ -45,43 +45,46 @@ const items: CarouselItemType[] = [
   },
   {
     id: 6,
-    imageSrc: directions,
-    title: 'Make it simple for your guests'
-  },
-  {
-    id: 7,
     imageSrc: personal,
     title: 'Keep it personal'
   }
 ]
 
 const Carousel = () => {
-  console.log('has loaded')
-  const [selectedId, setSelectedId] = useState<number>(0)
+  const [selectedIndex, setSelectedIndex] = useState(0)
 
-  const selectedIndex = items.findIndex((item) => item.id === selectedId)
+  useEffect(() => {
+    setTimeout(() => {
+      handleNextSlide()
+    }, 3000)
+  }, [selectedIndex])
 
-  const getItem = (position: number) => {
-    const diffCenter = position - 3
-    let index = selectedIndex - diffCenter
 
-    if (index < 0) {
-      index = 5 - (index * -1)
-    }
+  const handleNextSlide = () => {
+    const nextIndex = selectedIndex === items.length - 1 ? 0 : selectedIndex + 1
+    setSelectedIndex(nextIndex)
+  }
 
-    return items[index]
+  const handleSelectSlide = (id: number) => {
+    const index = items.findIndex((item) => item.id === id)
+    setSelectedIndex(index)
   }
 
   return (
     <div className="carousel-wrapper">
       <div className="carousel-grid">
-          <CarouselItem item={getItem(1)} onClick={() => setSelectedId(getItem(1).id)} position={'outside'} />
-          <CarouselItem item={getItem(2)} onClick={() => setSelectedId(getItem(2).id)} position={'secondary'} />
-          <CarouselItem item={getItem(3)} onClick={() => setSelectedId(getItem(3).id)} position={'center'} />
-          <CarouselItem item={getItem(4)} onClick={() => setSelectedId(getItem(4).id)} position={'secondary'} />
-          <CarouselItem item={getItem(5)} onClick={() => setSelectedId(getItem(5).id)} position={'outside'} />
+        {items.map((item, index) => {
+          const distanceFromCenter = Math.abs(selectedIndex - index)
+          return (
+            <CarouselItem
+              item={item}
+              handleSelect={handleSelectSlide}
+              distanceFromCenter={distanceFromCenter}
+              key={item.id}
+            />
+          )
+        })}
       </div>
-
     </div>
   )
 }
