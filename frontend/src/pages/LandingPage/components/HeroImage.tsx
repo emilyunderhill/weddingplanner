@@ -2,7 +2,6 @@ import React, { useContext } from "react"
 import useIsMobile from "../../../hooks/useIsMobile"
 import heroImg from '../../../assets/images/hero-image-6.jpg'
 import Button from "../../../components/Button"
-import {ReactComponent as EngagmentRing} from '../../../assets/icons/engagement-ring.svg'
 
 const HeroImage = () => {
   const { isMobile } = useIsMobile()
