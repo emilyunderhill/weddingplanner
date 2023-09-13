@@ -7,7 +7,7 @@ import { createFilter } from 'redux-persist-transform-filter';
 import { routerMiddleware } from 'react-router-redux'
 import rootReducer from './reducers'
 import { History } from 'history';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 const initStore = (history: History) => {
   const persistedFilter = createFilter(
@@ -39,6 +39,8 @@ const initStore = (history: History) => {
 export type RootState = ReturnType<typeof rootReducer>
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = ReturnType<typeof initStore>["dispatch"]
+export const useAppDispatch: () => AppDispatch = useDispatch
+
 
 export default initStore
 

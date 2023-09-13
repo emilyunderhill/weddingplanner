@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode'
 import * as auth from '../actions/auth'
-import { PayloadAction } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 export type Token = {
   token: string,
@@ -18,6 +18,7 @@ const initialState: AuthState = {
   refresh: undefined,
   errors: {},
 }
+
 export default (state = initialState, action: PayloadAction<any>) => {
   switch (action.type) {
     case auth.LOGIN_SUCCESS:

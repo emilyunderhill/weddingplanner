@@ -1,10 +1,12 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import useIsMobile from "../../../hooks/useIsMobile"
 import heroImg from '../../../assets/images/hero-image-6.jpg'
 import Button from "../../../components/Button"
+import CreateAccountModal from "./CreateAccountModal"
 
 const HeroImage = () => {
   const { isMobile } = useIsMobile()
+  const [createOpen, setCreateOpen] = useState(false)
 
   return (
     <div style={{
@@ -47,7 +49,7 @@ const HeroImage = () => {
           alignItems: 'center',
         }}>
           <Button
-            action={() => null}
+            action={() => setCreateOpen(true)}
             content={isMobile ? 'Create' : 'Create wedding'}
             variant={"primary"}
           />
@@ -58,7 +60,8 @@ const HeroImage = () => {
             {isMobile ? 'Log in' : 'Log in to an existing account'}
           </a>
         </div>
-        </div>
+      </div>
+      <CreateAccountModal isOpen={createOpen} onClose={() => setCreateOpen(false)} />
     </div>
   )
 }

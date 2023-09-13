@@ -6,6 +6,8 @@ type Variants = {
   destructive: 'destructive',
   warning: 'warning',
   subtle: 'subtle',
+  link: 'link',
+  linkDestructive: 'link-destructive'
 }
 
 type VariantKey = keyof Variants
@@ -34,6 +36,10 @@ const Button: FC<Props> = ({
     switch (variant) {
       case 'primary':
         return 'button-primary'
+      case 'link':
+        return 'button-link link'
+      case 'link-destructive':
+        return 'link button-link-destructive'
       default:
         break;
     }

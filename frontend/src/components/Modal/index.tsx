@@ -1,4 +1,4 @@
-import { FC, ReactNode, useRef } from "react";
+import React, { FC, ReactNode, useRef } from "react";
 import './style.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
@@ -6,12 +6,12 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 type Props = {
   header: string
   content: ReactNode | string
-  footer: ReactNode
+  footerComponents: ReactNode[]
   isOpen: boolean
   onClose: () => void
 }
 
-const Modal: FC<Props> = ({isOpen, header, content, onClose, footer}) => {
+const Modal: FC<Props> = ({isOpen, header, content, onClose, footerComponents}) => {
   const wrapperRef = useRef<HTMLDivElement>(null)
 
   if (!isOpen) {
@@ -32,14 +32,14 @@ const Modal: FC<Props> = ({isOpen, header, content, onClose, footer}) => {
           <FontAwesomeIcon icon={solid("xmark")} />
         </div>
          <div className="modal-header">
-          <p>{header}</p>
+          <h2>{header}</h2>
         </div>
         <hr />
         <div className="modal-content">
           {content}
         </div>
         <div className="modal-footer">
-          {footer}
+          {footerComponents}
         </div>
       </div>
     </div>

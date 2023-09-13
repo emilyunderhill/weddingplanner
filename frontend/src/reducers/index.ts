@@ -1,12 +1,15 @@
-import { History } from 'history';
+import { History, createBrowserHistory } from 'history';
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 import auth, * as fromAuth from './auth'
 import type { RootState } from '../store'
+import { connectRouter } from 'connected-react-router'
+
+const history = createBrowserHistory()
 
 export default combineReducers({
   auth: auth,
-  router: routerReducer
+  router: connectRouter(history),
 })
 
 export const isAuthenticated =
