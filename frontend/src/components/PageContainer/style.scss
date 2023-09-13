@@ -1,0 +1,16 @@
+.page-container {
+  background-color: white;
+  height: 100vh;
+  padding: 20px;
+  position: relative;
+}
+
+.mobile-page-container {
+  width: 100vw;
+}
+
+.desktop-page-container {
+  width: 75vw;
+  margin-left: auto;
+  margin-right: auto;
+}
