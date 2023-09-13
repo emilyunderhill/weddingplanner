@@ -1,13 +1,12 @@
-import React, { useContext, useMemo } from 'react';
+import React, { ReactNode, useContext, useMemo } from 'react';
 import { FC } from 'react'
 import '../../style.scss'
-import { CarouselItemType } from './CarouselItems'
-import PageContext from '../../../../hooks/PageContext';
+import useIsMobile from '../../../hooks/useIsMobile';
 
 export type Position = 'primary' | 'secondary' | 'tertiary'
 
 type Props = {
-  item: CarouselItemType
+  item: ReactNode
   scale: number
   translateX: number
   animate: boolean
@@ -19,7 +18,7 @@ const CarouselItem: FC<Props> = ({
   item,
   animate
 }) => {
-  const { isMobile } = useContext(PageContext)()
+  const { isMobile } = useIsMobile()
 
   if (!item) {
     return null
@@ -33,10 +32,7 @@ const CarouselItem: FC<Props> = ({
         className="carousel-item"
         style={{transform: `scale(${scale})`}}
       >
-        <div className='carousel-item-image' style={{ backgroundImage: `url(${item.imageSrc})`}} />
-        <div className="carousel-item-title">
-          <p>{item.title}</p>
-        </div>
+        {item}
       </div>
     </div>
   )

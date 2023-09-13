@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useContext } from "react"
-import PageContext from "../../hooks/PageContext"
+import useIsMobile from "../../hooks/useIsMobile"
 import './style.scss'
 
 type Props = {
@@ -7,7 +7,7 @@ type Props = {
 }
 
 const PageContainer: FC<Props> = ({children}) => {
-  const { isMobile } = useContext(PageContext)()
+  const { isMobile } = useIsMobile()
 
   return (
     <div className={`page-container ${isMobile ? 'mobile-page-container' : 'desktop-page-container'}`}>

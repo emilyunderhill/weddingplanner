@@ -1,11 +1,18 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, ReactNode, useEffect } from 'react';
 import '../../style.scss'
 import { useState } from 'react'
-import CarouselItem from './CarouselItem'
-import items from './CarouselItems'
+import CarouselItem from './components/CarouselItem'
 
+type Item = {
+  id: number
+  component: ReactNode
+}
 
-const Carousel: FC = () => {
+type Props = {
+  items: Item[]
+}
+
+const Carousel: FC<Props> = ({ items }) => {
   const [selectedIndex, setSelectedIndex] = useState(3)
 
   useEffect(() => {
@@ -48,7 +55,7 @@ const Carousel: FC = () => {
 
           return (
             <CarouselItem
-              item={item}
+              item={item.component}
               scale={scale}
               key={item.id}
               translateX={translateX}
