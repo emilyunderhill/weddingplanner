@@ -8,7 +8,6 @@ export type Position = 'primary' | 'secondary' | 'tertiary'
 
 type Props = {
   item: CarouselItemType
-  handleSelect: (id: number) => void
   scale: number
   translateX: number
   animate: boolean
@@ -18,7 +17,6 @@ const CarouselItem: FC<Props> = ({
   scale,
   translateX,
   item,
-  handleSelect,
   animate
 }) => {
   const { isMobile } = useContext(PageContext)()
@@ -32,7 +30,7 @@ const CarouselItem: FC<Props> = ({
       style={{ minWidth: isMobile ? '100%' : '20%', transform: `translateX(${ translateX }%`}}
     >
       <div
-        className="carousel-item" onClick={() => handleSelect(item.id)}
+        className="carousel-item"
         style={{transform: `scale(${scale})`}}
       >
         <div className='carousel-item-image' style={{ backgroundImage: `url(${item.imageSrc})`}} />

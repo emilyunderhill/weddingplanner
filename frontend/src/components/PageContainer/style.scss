@@ -1,13 +1,16 @@
-.mobile-page-container {
+.page-container {
   background-color: white;
-  width: 100vw;
   height: 100vh;
+  padding: 20px;
+  position: relative;
+}
+
+.mobile-page-container {
+  width: 100vw;
 }
 
 .desktop-page-container {
-  background-color: white;
   width: 75vw;
-  height: 100vh;
   margin-left: auto;
   margin-right: auto;
 }

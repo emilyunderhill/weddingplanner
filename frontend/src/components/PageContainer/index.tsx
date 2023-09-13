@@ -10,7 +10,7 @@ const PageContainer: FC<Props> = ({children}) => {
   const { isMobile } = useContext(PageContext)()
 
   return (
-    <div className={isMobile ? 'mobile-page-container' : 'desktop-page-container'}>
+    <div className={`page-container ${isMobile ? 'mobile-page-container' : 'desktop-page-container'}`}>
       {children}
     </div>
   )

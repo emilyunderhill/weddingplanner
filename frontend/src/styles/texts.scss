@@ -1,5 +1,35 @@
+@import './colors';
+
 .paragraph {
   text-align: justify;
   text-justify: inter-word;
   padding-top: '10px';
+}
+
+.link {
+  color: $border;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: small;
+
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.primary {
+  color: $primary;
+}
+
+.warning {
+  color: $warning;
+}
+
+.error {
+  color: $error;
+}
+
+.heading {
+  color: $border;
 }

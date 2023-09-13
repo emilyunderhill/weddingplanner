@@ -19,11 +19,6 @@ const Carousel: FC = () => {
     setSelectedIndex(nextIndex)
   }
 
-  const handleSelectSlide = (id: number) => {
-    const index = items.findIndex((item) => item.id === id)
-    setSelectedIndex(index)
-  }
-
   const getDistanceFromCenter = (index: number) => {
       const innerDiff = Math.abs(index - selectedIndex)
       const outerDiff = Math.abs(items.length - innerDiff)
@@ -54,7 +49,6 @@ const Carousel: FC = () => {
           return (
             <CarouselItem
               item={item}
-              handleSelect={handleSelectSlide}
               scale={scale}
               key={item.id}
               translateX={translateX}
