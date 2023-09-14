@@ -1,6 +1,7 @@
 from django.urls import path
-from views.account import account
+from .views import RegisterView, RetrieveUserView
 
 urlpatterns = [
-    path('api/accountCreate', account.create.as_view(), name='account-create'),
+    path('register', RegisterView.as_view()),
+    path('profile', RetrieveUserView.as_view()),
 ]

@@ -1,23 +1,41 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+from django.contrib.auth.password_validation import validate_password
+from django.core import exceptions
 
-class UserSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(
-            required=True,
-            validators=[UniqueValidator(queryset=User.objects.all())]
-            )
-    username = serializers.CharField(
-            max_length=32,
-            validators=[UniqueValidator(queryset=User.objects.all())]
-            )
-    password = serializers.CharField(min_length=8, write_only=True)
+User = get_user_model()
 
-    def create(self, validated_data):
-        user = User.objects.create_user(validated_data['username'], validated_data['email'],
-             validated_data['password'])
-        return user
-
+class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'password')
+        fields = ('first_name', 'last_name', 'email', 'password')
+
+    def validate(self, data):
+        user = User(**data)
+        password = data.get('password')
+
+        try:
+            validate_password(password, user)
+        except exceptions.ValidationError as e:
+            serializer_errors = serializers.as_serializer_error(e)
+            raise exceptions.ValidationError(
+                {'password': serializer_errors['non_field_errors']}
+            )
+        return data
+
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            first_name = validated_data['first_name'],
+            last_name = validated_data['last_name'],
+            email = validated_data['email'],
+            password = validated_data['password']
+        )
+
+        return user
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model: User
+        fields = ('first_name', 'last_name', 'email')
