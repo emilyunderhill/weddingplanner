@@ -39,9 +39,5 @@ const initStore = (history: History) => {
 export type RootState = ReturnType<typeof rootReducer>
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = ReturnType<typeof initStore>["dispatch"]
-export const useAppDispatch: () => AppDispatch = useDispatch
-
 
 export default initStore
-
-export const authSelector = (state: RootState) => useSelector(state.auth)

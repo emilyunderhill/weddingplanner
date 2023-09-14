@@ -2,8 +2,8 @@ import React, { FC, useState } from "react";
 import Modal from "../../../../components/Modal";
 import Button from "../../../../components/Button";
 import Input from "../../../../components/Input";
-import { login } from '../../../../actions/auth'
-import { useAppDispatch } from "../../../../store";
+import useAppDispatch from "../../../../hooks/useAppDispatch";
+import { register } from "../../../../redux/auth/authApi";
 
 
 type Props = {
@@ -114,7 +114,7 @@ const CreateAccountModal: FC<Props> = ({ isOpen, onClose }) => {
 
   const footerComponents = [
     <div className="ml-auto" key="create-account" >
-      <Button action={() => dispatch(login(email, password))} content={'Register'} variant={"primary"} />
+      <Button action={() => dispatch(register({firstName, lastName, email, password}))} content={'Register'} variant={"primary"} />
     </div>
   ]
 
