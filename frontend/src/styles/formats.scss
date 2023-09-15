@@ -140,3 +140,70 @@ $gap-large: 30px;
 .pb-l {
   padding-bottom: $gap-large;
 }
+
+// Zero margin or padding overrides other settings
+.m-0 {
+  margin: 0 !important;
+}
+
+.m-0 {
+  margin-left: 0 !important;
+}
+
+.mr-0 {
+  margin-right: 0 !important;
+}
+
+.mt-0 {
+  margin-top: 0 !important;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.p-0 {
+  padding: 0 !important;
+}
+
+.pl-0 {
+  padding-left: 0 !important;
+}
+
+.pr-0 {
+  padding-right: 0 !important;
+}
+
+.pt-0 {
+  padding-top: 0 !important;
+}
+
+.pb-0 {
+  padding-bottom: 0 !important;
+}
+
+// ------ Widths and heights ------
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.w-half {
+  width: 50%;
+}
+
+.h-half {
+  height: 50%;
+}
+
+// ------ Positions ------
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}

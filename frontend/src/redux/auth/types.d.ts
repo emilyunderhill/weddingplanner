@@ -2,6 +2,7 @@ export type User = {
   id: number,
   firstName: string,
   lastName: string,
+  email: string,
   role: string,
   accessToken: string,
   refreshToken: string,
@@ -20,7 +21,11 @@ export type RegisterResponse = {
   email: string
 }
 
-export type ValidationError = {
-  errorMessage: string
-  field_errors: Record<string, string>
+export type ValidationError = Record<string, string[]>
+
+export type UserState = {
+  isAuthenticated: boolean
+  isLoading: boolean
+  errors: ValidationError | null
+  user: Partial<User> | null
 }

@@ -1,14 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
-import { User } from './types'
+import { UserState } from './types'
 import { register } from './authApi'
-
-type UserState = {
-  isAuthenticated: boolean
-  isLoading: boolean
-  errors: string | null
-  user: Partial<User> | null
-}
+import { RootState } from '../../store'
 
 const initialState: UserState = {
   isAuthenticated: false,
@@ -17,7 +10,7 @@ const initialState: UserState = {
   user: null
 }
 
-const name = 'user'
+export const name = 'auth'
 
 const userSlice = createSlice({
   name,
@@ -31,28 +24,20 @@ const userSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    // The `builder` callback form is used here because it provides correctly typed reducers from the action creators
     builder.addCase(register.fulfilled, (state, { payload }) => {
+      state.isLoading = false
       const user = {
         firstName: payload.first_name,
         lastName: payload.last_name,
         email: payload.email,
       }
       state.user = user
-      state.isLoading = false
-      state.errors = null
     })
-    builder.addCase(register.rejected, (state, action) => {
-      state.user = null
+    builder.addCase(register.rejected, (state, { payload }) => {
       state.isLoading = false
-      if (action.payload) {
-        // Being that we passed in ValidationErrors to rejectType in `createAsyncThunk`, the payload will be available here.
-        state.errors = action.payload.errorMessage
-      } else {
-        state.errors = action.error.message ?? null
-      }
+      state.errors = payload ?? null
     }),
-      builder.addCase(register.pending, (state, action) => {
+      builder.addCase(register.pending, state => {
         state.errors = null
         state.user = null
         state.isLoading = false
@@ -61,3 +46,5 @@ const userSlice = createSlice({
 })
 
 export default userSlice.reducer
+
+export const selectUser = (state: RootState) => state[name]

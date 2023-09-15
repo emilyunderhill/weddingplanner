@@ -2,8 +2,6 @@ import { RegisterArg, RegisterResponse, ValidationError } from './types';
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import type { AxiosError } from 'axios'
 
-const BASE_URL = process.env.REACT_APP_SERVER_ENDPOINT as string;
-
 export const register = createAsyncThunk<RegisterResponse, RegisterArg, {rejectValue: ValidationError}>(
   'users/register',
   async ({email, firstName, lastName, password}, thunkAPI) => {
@@ -28,10 +26,11 @@ export const register = createAsyncThunk<RegisterResponse, RegisterArg, {rejectV
 
       if (res.status === 201) {
         return data
-      } else {
-        return thunkAPI.rejectWithValue(data)
       }
+
+      return thunkAPI.rejectWithValue(data)
     } catch (err) {
+      console.log({err})
       const error = err as AxiosError<ValidationError>
 
       if (!error.response) {
