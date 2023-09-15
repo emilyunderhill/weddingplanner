@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useState } from "react";
-import Modal from "../../../../components/Modal";
-import Button from "../../../../components/Button";
-import Input from "../../../../components/Input";
-import useUser from "../../../../hooks/useUser";
-import { ValidationError } from "../../../../redux/auth/types";
+import Modal from "../Modal";
+import Button from "../Button";
+import Input from "../Input";
+import useUser from "../../hooks/useUser";
+import { ValidationError } from "../../redux/auth/types";
 
 
 type Props = {

@@ -2,30 +2,18 @@ import React, { useContext, useState } from "react"
 import useIsMobile from "../../../hooks/useIsMobile"
 import heroImg from '../../../assets/images/hero-image-6.jpg'
 import Button from "../../../components/Button"
-import CreateAccountModal from "./CreateAccountModal"
+import CreateAccountModal from "../../../components/CreateAccountModal"
+import LoginModal from "../../../components/LoginModal"
+import '../style.scss'
 
 const HeroImage = () => {
   const { isMobile } = useIsMobile()
   const [createOpen, setCreateOpen] = useState(false)
+  const [loginOpen, setLoginOpen] = useState(false)
 
   return (
-    <div style={{
-      position: 'relative',
-      top: 0,
-      left: 0,
-      width: '100vw',
-      height: '100vh',
-      backgroundImage: `url(${heroImg})`,
-      backgroundPosition: 'center',
-      backgroundSize: 'cover',
-      display: 'flex',
-    }}>
-      <div style={{
-        marginTop: '10%',
-        marginLeft: '10%',
-        marginRight: '10%',
-        maxWidth: isMobile ? '100%' : '33%',
-      }}>
+    <div className="hero-image" style={{ backgroundImage: `url(${heroImg})` }}>
+      <div className="hero-image-text-container" style={{ maxWidth: isMobile ? '100%': '33%' }}>
         <h1>
           Start planning your perfect wedding
         </h1>
@@ -53,16 +41,17 @@ const HeroImage = () => {
             content={isMobile ? 'Create' : 'Create wedding'}
             variant={"primary"}
           />
-          <a style={{
-            marginLeft: 'auto',
-            paddingLeft: '10px',
-          }}>
-            {isMobile ? 'Log in' : 'Log in to an existing account'}
-          </a>
+          <div className="ml-auto">
+            <Button
+              action={() => setLoginOpen(true)}
+              content={isMobile ? 'Log in' : 'Log in to an existing account'}
+              variant="link"
+            />
+          </div>
         </div>
       </div>
       <CreateAccountModal isOpen={createOpen} onClose={() => setCreateOpen(false)} />
-      
+      <LoginModal isOpen={loginOpen} onClose={() => setLoginOpen(false)} />
     </div>
   )
 }

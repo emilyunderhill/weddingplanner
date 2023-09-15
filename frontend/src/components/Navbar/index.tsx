@@ -5,6 +5,7 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import useUser from "../../hooks/useUser";
 import Button from "../Button";
 import LoginModal from "../LoginModal";
+import CreateAccountModal from "../CreateAccountModal";
 
 const Navbar = () => {
   const {
@@ -13,6 +14,7 @@ const Navbar = () => {
   } = useUser()
 
   const [loginModalOpen, setLoginModalOpen] = useState(false)
+  const [createModalOpen, setCreateModalOpen] = useState(false)
 
   const handleOnLogin = () => {
     setLoginModalOpen(true)
@@ -20,7 +22,11 @@ const Navbar = () => {
 
   const noUserContent = (
     <div className="navbar-content">
-      <a>Create account</a>
+      <Button
+        content="Start planning"
+        action={() => setCreateModalOpen(true)}
+        variant="link"
+      />
       <FontAwesomeIcon icon={solid("ribbon")} className="heading" />
       <Button
         action={() => handleOnLogin()}
@@ -64,6 +70,7 @@ const Navbar = () => {
         <hr />
       </div>
       <LoginModal isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
+      <CreateAccountModal isOpen={createModalOpen} onClose={() => setCreateModalOpen(false)} />
     </>
   )
 }

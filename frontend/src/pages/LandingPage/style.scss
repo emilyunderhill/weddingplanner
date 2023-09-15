@@ -46,3 +46,20 @@
     color: white;
   }
 }
+
+.hero-image {
+  position: 'relative';
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+}
+
+.hero-image-text-container {
+  margin-top: 10%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
