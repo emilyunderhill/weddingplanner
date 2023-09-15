@@ -36,7 +36,6 @@ export const register = createAsyncThunk<RegisterResponse, RegisterArg, { reject
 
       return thunkAPI.rejectWithValue(data)
     } catch (err) {
-      console.log({ err })
       const error = err as AxiosError<ValidationError>
 
       if (!error.response) {
@@ -70,14 +69,17 @@ export const login = createAsyncThunk<LoginResponse, LoginArg, { rejectValue: Va
 
       if (res.status === 200) {
         const { dispatch } = thunkAPI
-        dispatch(getUserDetails)
+        //Wait 2s before fetching local storage in order for it to be persisted
+        setTimeout(() => {
+          dispatch(getUserDetails())
+        }, 2000)
+
 
         return data
       }
 
       return thunkAPI.rejectWithValue(data)
     } catch (err) {
-      console.log({ err })
       const error = err as AxiosError<ValidationError>
 
       if (!error.response) {
@@ -92,15 +94,23 @@ export const login = createAsyncThunk<LoginResponse, LoginArg, { rejectValue: Va
 export const getUserDetails = createAsyncThunk<GetUserDetailsRespone, void, { rejectValue: ValidationError }>(
   'users/profile',
   async (_, thunkAPI) => {
+    const storedUserData = window.localStorage.getItem('persist:user')
+    if (!storedUserData) {
+      return
+    }
 
-    const { accessToken } = useAppSelector(selectUser)
+    const storedAuthData = JSON.parse(storedUserData).auth
+    if (!storedAuthData) {
+      return
+    }
+
+    const accessToken = JSON.parse(storedAuthData).accessToken
 
     try {
       const res = await fetch('/api/users/profile', {
         method: 'GET',
         headers: {
           Accept: 'application/json',
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`
         },
       })

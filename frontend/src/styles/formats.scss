@@ -8,6 +8,11 @@
   flex-direction: column;
 }
 
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
 //------- Margin & Padding ------------//
 $gap-small: 10px;
 $gap-medium: 20px;

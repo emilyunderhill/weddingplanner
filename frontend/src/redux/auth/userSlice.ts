@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { UserState } from './types'
-import { login, register } from './authApi'
+import { getUserDetails, login, register } from './authApi'
 import { RootState } from '../../store'
 
 const initialState: UserState = {
@@ -25,6 +25,9 @@ const userSlice = createSlice({
       state.isLoading = false
       state.accessToken = null
       state.refreshToken = null
+    },
+    resetErrors: (state) => {
+      state.errors = null
     }
   },
   extraReducers: (builder) => {
@@ -60,11 +63,32 @@ const userSlice = createSlice({
       state.isLoading = false
       state.accessToken = null
       state.refreshToken = null
+    }),
+    builder.addCase(getUserDetails.fulfilled, (state, {payload}) => {
+      const user = {
+        firstName: payload.first_name,
+        lastName: payload.last_name,
+        email: payload.email
+      }
+
+      state.user = user
+      state.isLoading = false
+      state.errors = null
+    }),
+    builder.addCase(getUserDetails.pending, state => {
+      state.user = null
+      state.isLoading = true
+      state.errors = null
+    }),
+    builder.addCase(getUserDetails.rejected, (state, { payload }) => {
+      state.user = null
+      state.isLoading = false
+      state.errors = payload ?? null
     })
   },
 })
 
-export const { logOut } = userSlice.actions
+export const { logOut, resetErrors } = userSlice.actions
 
 export default userSlice.reducer
 

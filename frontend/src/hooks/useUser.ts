@@ -1,6 +1,6 @@
-import { register } from "../redux/auth/authApi"
-import { RegisterArg } from "../redux/auth/types"
-import { logOut, selectUser } from "../redux/auth/userSlice"
+import { register, login } from "../redux/auth/authApi"
+import { LoginArg, RegisterArg } from "../redux/auth/types"
+import { logOut, selectUser, resetErrors } from "../redux/auth/userSlice"
 import useAppDispatch from "./useAppDispatch"
 import useAppSelector from "./useAppSelector"
 
@@ -10,6 +10,8 @@ const useUser = () => {
 
   const handleRegister = (arg: RegisterArg) => dispatch(register(arg))
   const handleLogOut = () => dispatch(logOut())
+  const handleLogin = (arg: LoginArg) => dispatch(login(arg))
+  const handleResetErrors = () => dispatch(resetErrors())
 
   return {
     state: {
@@ -22,7 +24,9 @@ const useUser = () => {
     },
     actions: {
       register: handleRegister,
-      logOut: handleLogOut
+      logOut: handleLogOut,
+      login: handleLogin,
+      resetErrors: handleResetErrors,
     }
   }
 }

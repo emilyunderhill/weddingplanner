@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useState } from "react";
-import Modal from "../../../../components/Modal";
-import Button from "../../../../components/Button";
-import Input from "../../../../components/Input";
-import useUser from "../../../../hooks/useUser";
-import { ValidationError } from "../../../../redux/auth/types";
+import Modal from "../Modal";
+import Button from "../Button";
+import Input from "../Input";
+import useUser from "../../hooks/useUser";
+import { ValidationError } from "../../redux/auth/types";
 
 
 type Props = {
@@ -11,16 +11,14 @@ type Props = {
   onClose: () => void
 }
 
-const CreateAccountModal: FC<Props> = ({ isOpen, onClose }) => {
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
+const LoginModal: FC<Props> = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const [errorData, setErrorData] = useState<undefined | ValidationError>(undefined)
 
   const {
-    actions: { register, resetErrors },
+    actions: { login, resetErrors },
     state: { isLoading, errors }
   } = useUser()
 
@@ -44,35 +42,13 @@ const CreateAccountModal: FC<Props> = ({ isOpen, onClose }) => {
       <div className="grid-2">
         <div className="pr-sm">
           <Input
-            name="first_name"
-            label="First name"
-            labelPosition="top"
-            value={firstName}
-            onChange={(value) => setFirstName(value as string)}
-            errors={errorData}
-          />
-        </div>
-        <div className="pl-sm">
-          <Input
-            name="last_name"
-            label="Last name"
-            labelPosition="top"
-            value={lastName}
-            onChange={(value) => setLastName(value as string)}
-            errors={errorData}
-          />
-        </div>
-      </div>
-      <div className="grid-2">
-        <div className="pr-sm">
-          <Input
             name="email"
             label="Email"
             labelPosition="top"
             value={email}
             onChange={(value) => setEmail(value as string)}
             errors={errorData}
-        />
+          />
         </div>
         <div className="pl-sm">
           <Input
@@ -91,8 +67,8 @@ const CreateAccountModal: FC<Props> = ({ isOpen, onClose }) => {
   const footerComponents = [
     <div className="ml-auto" key="create-account" >
       <Button
-        action={() => register({ firstName, lastName, email, password })}
-        content="Register"
+        action={() => login({ email, password })}
+        content="Login"
         variant="primary"
         isLoading={isLoading}
       />
@@ -101,7 +77,7 @@ const CreateAccountModal: FC<Props> = ({ isOpen, onClose }) => {
 
   return (
     <Modal
-      header="Create an account"
+      header="Login to your account"
       content={content}
       footerComponents={footerComponents}
       isOpen={isOpen}
@@ -109,4 +85,4 @@ const CreateAccountModal: FC<Props> = ({ isOpen, onClose }) => {
   )
 }
 
-export default CreateAccountModal
+export default LoginModal

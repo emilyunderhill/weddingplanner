@@ -62,6 +62,7 @@ const HeroImage = () => {
         </div>
       </div>
       <CreateAccountModal isOpen={createOpen} onClose={() => setCreateOpen(false)} />
+      
     </div>
   )
 }
