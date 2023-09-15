@@ -5,19 +5,24 @@ import { ConnectedRouter } from 'connected-react-router/immutable'
 import { Provider } from 'react-redux'
 import './index.scss';
 import App from './App';
-import configureStore from './store'
+import configureStore, { persistor } from './store'
 import reportWebVitals from './reportWebVitals';
+import { PersistGate } from 'redux-persist/integration/react';
+
 
 const history = createBrowserHistory()
 const store = configureStore(history)
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <App />
-    </ConnectedRouter>
+    <PersistGate loading={null} persistor={persistor(history)}>
+      <ConnectedRouter history={history}>
+        <App />
+      </ConnectedRouter>
+    </PersistGate>
   </Provider>
 )
 

@@ -7,18 +7,14 @@ import { createFilter } from 'redux-persist-transform-filter';
 import { routerMiddleware } from 'react-router-redux'
 import rootReducer from './reducers'
 import { History } from 'history';
-import { useSelector, useDispatch } from 'react-redux'
+import { name as authKey } from './redux/auth/userSlice'
 
 const initStore = (history: History) => {
-  const persistedFilter = createFilter(
-    'auth', ['access', 'refresh']);
-
   const reducer = persistReducer(
     {
-      key: 'polls',
+      key: 'user',
       storage: storage,
-      whitelist: ['auth'],
-      transforms: [persistedFilter]
+      whitelist: [authKey],
     },
     rootReducer)
 
@@ -41,3 +37,6 @@ export type RootState = ReturnType<typeof rootReducer>
 export type AppDispatch = ReturnType<typeof initStore>["dispatch"]
 
 export default initStore
+
+
+export const persistor = (history: History<unknown>) => persistStore(initStore(history))

@@ -74,7 +74,7 @@
     "react-router-redux": "^5.0.0-alpha.9",
     "redux": "^4.2.1",
     "redux-api-middleware": "^2.0.0-beta.3",
-    "redux-persist": "^5.0.0-beta.7",
+    "redux-persist": "^5.10.0",
     "redux-persist-transform-filter": "0.0.22",
     "typescript": "^4.0.0"
   },

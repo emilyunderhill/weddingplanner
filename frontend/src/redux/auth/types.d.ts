@@ -1,11 +1,7 @@
 export type User = {
-  id: number,
   firstName: string,
   lastName: string,
-  email: string,
-  role: string,
-  accessToken: string,
-  refreshToken: string,
+  email: string
 }
 
 export type RegisterArg = {
@@ -27,5 +23,19 @@ export type UserState = {
   isAuthenticated: boolean
   isLoading: boolean
   errors: ValidationError | null
-  user: Partial<User> | null
+  user: User | null
+  accessToken: string | null
+  refreshToken: string | null
 }
+
+export type LoginArg = {
+  email: string
+  password: string
+}
+
+export type LoginResponse = {
+  access: string
+  refresh: string
+}
+
+export type GetUserDetailsRespone = RegisterResponse

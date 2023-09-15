@@ -1,13 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { UserState } from './types'
-import { register } from './authApi'
+import { login, register } from './authApi'
 import { RootState } from '../../store'
 
 const initialState: UserState = {
   isAuthenticated: false,
   isLoading: false,
   errors: null,
-  user: null
+  user: null,
+  accessToken: null,
+  refreshToken: null,
 }
 
 export const name = 'auth'
@@ -21,27 +23,44 @@ const userSlice = createSlice({
       state.user = null
       state.errors = null
       state.isLoading = false
+      state.accessToken = null
+      state.refreshToken = null
     }
   },
   extraReducers: (builder) => {
     builder.addCase(register.fulfilled, (state, { payload }) => {
       state.isLoading = false
-      const user = {
-        firstName: payload.first_name,
-        lastName: payload.last_name,
-        email: payload.email,
-      }
-      state.user = user
+      state.errors = null
     })
     builder.addCase(register.rejected, (state, { payload }) => {
       state.isLoading = false
       state.errors = payload ?? null
     }),
-      builder.addCase(register.pending, state => {
-        state.errors = null
-        state.user = null
-        state.isLoading = false
-      })
+    builder.addCase(register.pending, state => {
+      state.errors = null
+      state.isLoading = false
+    }),
+    builder.addCase(login.fulfilled, (state, { payload }) => {
+      state.isAuthenticated = true
+      state.errors = null
+      state.isLoading = false
+      state.accessToken = payload.access
+      state.refreshToken = payload.refresh
+    }),
+    builder.addCase(login.pending, state => {
+      state.isAuthenticated = false
+      state.errors = null
+      state.isLoading = true
+      state.accessToken = null
+      state.refreshToken = null
+    }),
+    builder.addCase(login.rejected, (state, { payload }) => {
+      state.isAuthenticated = false
+      state.errors = payload ?? null
+      state.isLoading = false
+      state.accessToken = null
+      state.refreshToken = null
+    })
   },
 })
 
