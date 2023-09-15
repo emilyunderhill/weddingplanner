@@ -15,6 +15,7 @@ const initStore = (history: History) => {
       key: 'user',
       storage: storage,
       whitelist: [authKey],
+      timeout: 1000,
     },
     rootReducer)
 

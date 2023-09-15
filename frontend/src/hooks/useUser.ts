@@ -1,6 +1,6 @@
 import { register } from "../redux/auth/authApi"
 import { RegisterArg } from "../redux/auth/types"
-import { selectUser } from "../redux/auth/userSlice"
+import { logOut, selectUser } from "../redux/auth/userSlice"
 import useAppDispatch from "./useAppDispatch"
 import useAppSelector from "./useAppSelector"
 
@@ -9,6 +9,7 @@ const useUser = () => {
   const dispatch = useAppDispatch()
 
   const handleRegister = (arg: RegisterArg) => dispatch(register(arg))
+  const handleLogOut = () => dispatch(logOut())
 
   return {
     state: {
@@ -20,7 +21,8 @@ const useUser = () => {
       isLoading: state.isLoading,
     },
     actions: {
-      register: handleRegister
+      register: handleRegister,
+      logOut: handleLogOut
     }
   }
 }

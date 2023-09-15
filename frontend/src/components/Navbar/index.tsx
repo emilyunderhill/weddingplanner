@@ -2,21 +2,14 @@ import React from "react";
 import './style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import useUser from "../../hooks/useUser";
+import Button from "../Button";
 
 const Navbar = () => {
-  const isAuthenticated = () => {
-    const rawStorage = window.localStorage.getItem('persist:user')
-
-    if (!rawStorage) {
-      console.log('Err: auth local storage not found')
-      return
-    }
-
-    const auth = JSON.parse(rawStorage).auth
-
-
-    return JSON.parse(auth).isAuthenticated
-  }
+  const {
+    state: { isAuthenticated },
+    actions: { logOut }
+  } = useUser()
 
   const noUserContent = (
     <div className="navbar-content">
@@ -36,17 +29,23 @@ const Navbar = () => {
       <a>Home</a>
       <FontAwesomeIcon icon={solid("ribbon")} className="heading" />
       <div className="flex-row">
-        <a>
-          Log out
-        </a>
-        <FontAwesomeIcon icon={solid("chevron-down")} size="xs" className="link ml-sm" />
+        <Button
+          action={() => logOut()}
+          content={
+            (
+              <div className="flew-row">
+                <a>Log out</a>
+                <FontAwesomeIcon icon={solid("chevron-down")} size="xs" className="link ml-sm" />
+              </div>
+            )
+          } variant={"link"} />
       </div>
     </div>
   )
 
   return (
     <div className="navbar-container">
-      {isAuthenticated() ? userContent : noUserContent}
+      {isAuthenticated ? userContent : noUserContent}
       <hr />
     </div>
   )
