@@ -16,6 +16,10 @@ const Navbar = () => {
   const [loginModalOpen, setLoginModalOpen] = useState(false)
   const [createModalOpen, setCreateModalOpen] = useState(false)
 
+  const {
+    actions: { resetErrors },
+  } = useUser()
+
   const handleOnLogin = () => {
     setLoginModalOpen(true)
   }
@@ -63,14 +67,30 @@ const Navbar = () => {
     </div>
   )
 
+  const handleOnCloseLoginModal = () => {
+    resetErrors()
+    setLoginModalOpen(false)
+  }
+
+  const handleOnCloseCreateModal = () => {
+    resetErrors()
+    setCreateModalOpen(false)
+  }
+
   return (
     <>
       <div className="navbar-container">
         {isAuthenticated ? userContent : noUserContent}
         <hr />
       </div>
-      <LoginModal isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
-      <CreateAccountModal isOpen={createModalOpen} onClose={() => setCreateModalOpen(false)} />
+      <LoginModal
+        isOpen={loginModalOpen}
+        onClose={handleOnCloseLoginModal}
+      />
+      <CreateAccountModal
+        isOpen={createModalOpen}
+        onClose={handleOnCloseCreateModal}
+      />
     </>
   )
 }

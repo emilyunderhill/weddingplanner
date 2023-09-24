@@ -1,7 +1,6 @@
 import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/es/storage'
 import { apiMiddleware } from 'redux-api-middleware';
-import { applyMiddleware } from 'redux'
 import { configureStore } from '@reduxjs/toolkit'
 import { createFilter } from 'redux-persist-transform-filter';
 import { routerMiddleware } from 'react-router-redux'
@@ -10,12 +9,19 @@ import { History } from 'history';
 import { name as authKey } from './redux/auth/userSlice'
 
 const initStore = (history: History) => {
+  const persistFilter = createFilter(authKey, [
+    'isAuthenticated',
+    'accessToken',
+    'refreshToken'
+  ])
+
   const reducer = persistReducer(
     {
       key: 'user',
       storage: storage,
       whitelist: [authKey],
       timeout: 1000,
+      transforms: [persistFilter],
     },
     rootReducer)
 

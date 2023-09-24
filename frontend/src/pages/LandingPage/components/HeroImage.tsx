@@ -5,11 +5,26 @@ import Button from "../../../components/Button"
 import CreateAccountModal from "../../../components/CreateAccountModal"
 import LoginModal from "../../../components/LoginModal"
 import '../style.scss'
+import useUser from "../../../hooks/useUser"
 
 const HeroImage = () => {
   const { isMobile } = useIsMobile()
   const [createOpen, setCreateOpen] = useState(false)
   const [loginOpen, setLoginOpen] = useState(false)
+
+  const {
+    actions: { resetErrors },
+  } = useUser()
+
+  const handleOnCloseLoginModal = () => {
+    resetErrors()
+    setLoginOpen(false)
+  }
+
+  const handleOnCloseCreateModal = () => {
+    resetErrors()
+    setCreateOpen(false)
+  }
 
   return (
     <div className="hero-image" style={{ backgroundImage: `url(${heroImg})` }}>
@@ -50,8 +65,8 @@ const HeroImage = () => {
           </div>
         </div>
       </div>
-      <CreateAccountModal isOpen={createOpen} onClose={() => setCreateOpen(false)} />
-      <LoginModal isOpen={loginOpen} onClose={() => setLoginOpen(false)} />
+      <CreateAccountModal isOpen={createOpen} onClose={handleOnCloseCreateModal} />
+      <LoginModal isOpen={loginOpen} onClose={handleOnCloseLoginModal} />
     </div>
   )
 }

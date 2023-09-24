@@ -32,6 +32,7 @@ const CreateAccountModal: FC<Props> = ({ isOpen, onClose }) => {
 
   const handleOnClose = () => {
     resetErrors()
+    setErrorData(undefined)
     setPassword('')
     onClose()
   }
