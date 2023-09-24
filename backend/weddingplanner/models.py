@@ -1,12 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 
+
 class UserAccountManager(BaseUserManager):
     def create_user(self, email, first_name, last_name, password=None):
-        """
-        Creates and saves a User with the given email, first name, last name
-        and password.
-        """
         if not email:
             raise ValueError("Users must have an email address")
 
@@ -14,7 +11,7 @@ class UserAccountManager(BaseUserManager):
             raise ValueError("Users must have a first name")
 
         email = self.normalize_email(email)
-        email  =email.lower()
+        email = email.lower()
 
         user = self.model(
             email=self.normalize_email(email),
@@ -45,6 +42,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    wedding = models.ForeignKey('Wedding', on_delete=models.CASCADE, null=True)
 
     objects = UserAccountManager()
 
@@ -53,3 +51,13 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+class Wedding(models.Model):
+    def create_wedding(user: UserAccount):
+        wedding = Wedding()
+        wedding.save()
+
+        user.wedding = wedding
+        user.save()
+
+        return wedding
