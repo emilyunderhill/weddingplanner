@@ -32,5 +32,8 @@
 
 .button-destructive {
   fill: $error;
+}
 
+.button-link-destructive {
+  color: $error !important;
 }

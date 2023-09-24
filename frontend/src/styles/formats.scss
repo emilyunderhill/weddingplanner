@@ -8,10 +8,23 @@
   flex-direction: column;
 }
 
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
 //------- Margin & Padding ------------//
 $gap-small: 10px;
 $gap-medium: 20px;
 $gap-large: 30px;
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.mr-auto {
+  margin-right: auto;
+}
 
 .m-sm {
   margin: $gap-small;
@@ -22,7 +35,7 @@ $gap-large: 30px;
 }
 
 .mr-sm {
-  margin-left: $gap-small;
+  margin-right: $gap-small;
 }
 
 .mt-sm {
@@ -42,7 +55,7 @@ $gap-large: 30px;
 }
 
 .pr-sm {
-  padding-left: $gap-small;
+  padding-right: $gap-small;
 }
 
 .pt-sm {
@@ -62,7 +75,7 @@ $gap-large: 30px;
 }
 
 .mr-med {
-  margin-left: $gap-medium;
+  margin-right: $gap-medium;
 }
 
 .mt-med {
@@ -82,7 +95,7 @@ $gap-large: 30px;
 }
 
 .pr-med {
-  padding-left: $gap-medium;
+  padding-right: $gap-medium;
 }
 
 .pt-med {
@@ -102,7 +115,7 @@ $gap-large: 30px;
 }
 
 .mr-l {
-  margin-left: $gap-large;
+  margin-right: $gap-large;
 }
 
 .mt-l {
@@ -122,7 +135,7 @@ $gap-large: 30px;
 }
 
 .pr-l {
-  padding-left: $gap-large;
+  padding-right: $gap-large;
 }
 
 .pt-l {
@@ -131,4 +144,71 @@ $gap-large: 30px;
 
 .pb-l {
   padding-bottom: $gap-large;
+}
+
+// Zero margin or padding overrides other settings
+.m-0 {
+  margin: 0 !important;
+}
+
+.m-0 {
+  margin-left: 0 !important;
+}
+
+.mr-0 {
+  margin-right: 0 !important;
+}
+
+.mt-0 {
+  margin-top: 0 !important;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.p-0 {
+  padding: 0 !important;
+}
+
+.pl-0 {
+  padding-left: 0 !important;
+}
+
+.pr-0 {
+  padding-right: 0 !important;
+}
+
+.pt-0 {
+  padding-top: 0 !important;
+}
+
+.pb-0 {
+  padding-bottom: 0 !important;
+}
+
+// ------ Widths and heights ------
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.w-half {
+  width: 50%;
+}
+
+.h-half {
+  height: 50%;
+}
+
+// ------ Positions ------
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
 }

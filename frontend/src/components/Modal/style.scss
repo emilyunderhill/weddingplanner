@@ -14,14 +14,17 @@
   position: fixed;
   left: 50%;
   transform: translate(-50%, -50%);
-  top: 33vh;
+  top: 40vh;
   width: 25%;
   background-color: white;
   z-index: 2;
   border-radius: 10px;
-  min-width: 300px;
+  min-width: 500px;
   padding: 25px;
   opacity: 100% !important;
+  max-height: 60vh;
+  display: flex;
+  flex-direction: column;
 
   hr {
     width: 75%;
@@ -32,10 +35,13 @@
 .modal-header {
   text-align: center;
   margin-top: 0px;
+  top: 0;
 }
 
 .modal-content {
   margin-top: 25px;
+  overflow-y: auto;
+  margin-top: 0;
 }
 
 .modal-footer {
@@ -50,9 +56,7 @@
   top: 10px;
   right: 10px;
   color: $text;
-  border-color: $text;
   opacity: 75%;
-  border: solid;
   border-radius: 50%;
   padding: 2px 5px 2px 5px;
   &:hover{

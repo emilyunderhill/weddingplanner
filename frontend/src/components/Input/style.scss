@@ -1,0 +1,44 @@
+@import '../../styles/colors';
+
+.input {
+  width: 100%;
+  position: relative;
+  border: solid 1px $text;
+  border-radius: 5px;
+  padding: 5px;
+  transition: border, color 0.2s ease-in-out;
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+.input:-webkit-autofill {
+  -webkit-text-fill-color: #fff;
+  box-shadow: 0 0 0px 1000px #222b36 inset;
+}
+
+.input:-webkit-autofill:focus {
+  box-shadow: 0 0 0px 1000px #266798 inset;
+}
+
+.input::placeholder {
+  color: $border-faded;
+}
+
+.input:hover {
+  border: 1px solid $primary;
+}
+
+.input:focus {
+  outline: 0 !important;
+  border: 2px solid $primary !important;
+}
+.input-active {
+  border: solid 2px $primary;
+}
+
+.input-error {
+  border-color: $error;
+  p {
+    color: $error
+  }
+}
