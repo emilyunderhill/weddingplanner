@@ -4,6 +4,8 @@ import Button from "../Button";
 import Input from "../Input";
 import useUser from "../../hooks/useUser";
 import { ValidationError } from "../../redux/auth/types";
+import { redirect, useNavigate } from "react-router-dom";
+import { ROUTE_DASHBOARD } from "../../library/routes";
 
 
 type Props = {
@@ -19,9 +21,11 @@ const CreateAccountModal: FC<Props> = ({ isOpen, onClose }) => {
 
   const [errorData, setErrorData] = useState<undefined | ValidationError>(undefined)
 
+  const navigate = useNavigate();
+
   const {
     actions: { register, resetErrors },
-    state: { isLoading, errors }
+    state: { isLoading, errors, isAuthenticated }
   } = useUser()
 
   useEffect(() => {
@@ -30,6 +34,13 @@ const CreateAccountModal: FC<Props> = ({ isOpen, onClose }) => {
     }
   }, [errors])
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(ROUTE_DASHBOARD)
+      handleOnClose()
+    }
+  }, [isAuthenticated])
+
   const handleOnClose = () => {
     resetErrors()
     setErrorData(undefined)
@@ -37,12 +48,23 @@ const CreateAccountModal: FC<Props> = ({ isOpen, onClose }) => {
     onClose()
   }
 
+  const handleOnRegister = () => {
+    register({ firstName, lastName, email, password })
+  }
+
+
+  const handleOnKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      handleOnRegister()
+    }
+  }
+
   const content = (
     <div>
       <h2 className="heading mt-sm mb-2m">
         Your details
       </h2>
-      <div className="grid-2">
+      <div className="grid-2" onKeyDown={handleOnRegister}>
         <div className="pr-sm">
           <Input
             name="first_name"
@@ -92,7 +114,7 @@ const CreateAccountModal: FC<Props> = ({ isOpen, onClose }) => {
   const footerComponents = [
     <div className="ml-auto" key="create-account" >
       <Button
-        action={() => register({ firstName, lastName, email, password })}
+        action={handleOnRegister}
         content="Register"
         variant="primary"
         isLoading={isLoading}

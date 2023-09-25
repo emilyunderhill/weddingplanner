@@ -1,9 +1,11 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState, KeyboardEvent } from "react";
 import Modal from "../Modal";
 import Button from "../Button";
 import Input from "../Input";
 import useUser from "../../hooks/useUser";
 import { ValidationError } from "../../redux/auth/types";
+import { useNavigate } from "react-router-dom";
+import { ROUTE_DASHBOARD } from "../../library/routes";
 
 
 type Props = {
@@ -15,11 +17,13 @@ const LoginModal: FC<Props> = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  const navigate = useNavigate();
+
   const [errorData, setErrorData] = useState<undefined | ValidationError>(undefined)
 
   const {
     actions: { login, resetErrors },
-    state: { isLoading, errors }
+    state: { isLoading, errors, isAuthenticated }
   } = useUser()
 
   useEffect(() => {
@@ -28,6 +32,16 @@ const LoginModal: FC<Props> = ({ isOpen, onClose }) => {
     }
   }, [errors])
 
+  const handleOnLogin = () => {
+    login({ email, password })
+  }
+
+  const handleOnKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      handleOnLogin()
+    }
+  }
+
   const handleOnClose = () => {
     resetErrors()
     setErrorData(undefined)
@@ -35,8 +49,15 @@ const LoginModal: FC<Props> = ({ isOpen, onClose }) => {
     onClose()
   }
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(ROUTE_DASHBOARD)
+      handleOnClose()
+    }
+  }, [isAuthenticated])
+
   const content = (
-    <div>
+    <div onKeyDown={handleOnKeyDown}>
       <h2 className="heading mt-sm mb-2m">
         Your details
       </h2>
@@ -68,7 +89,7 @@ const LoginModal: FC<Props> = ({ isOpen, onClose }) => {
   const footerComponents = [
     <div className="ml-auto" key="create-account" >
       <Button
-        action={() => login({ email, password })}
+        action={handleOnLogin}
         content="Login"
         variant="primary"
         isLoading={isLoading}

@@ -6,6 +6,7 @@ import useUser from "../../hooks/useUser";
 import Button from "../Button";
 import LoginModal from "../LoginModal";
 import CreateAccountModal from "../CreateAccountModal";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const {
@@ -16,12 +17,19 @@ const Navbar = () => {
   const [loginModalOpen, setLoginModalOpen] = useState(false)
   const [createModalOpen, setCreateModalOpen] = useState(false)
 
+  const navigate = useNavigate();
+
   const {
     actions: { resetErrors },
   } = useUser()
 
   const handleOnLogin = () => {
     setLoginModalOpen(true)
+  }
+
+  const handleOnLogout = () => {
+    logOut()
+    navigate('/')
   }
 
   const noUserContent = (
@@ -53,7 +61,7 @@ const Navbar = () => {
       <FontAwesomeIcon icon={solid("ribbon")} className="heading" />
       <div className="flex-row">
         <Button
-          action={() => logOut()}
+          action={handleOnLogout}
           content={
             (
               <div className="flew-row">

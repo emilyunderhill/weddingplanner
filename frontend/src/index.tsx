@@ -8,6 +8,7 @@ import App from './App';
 import configureStore, { persistor } from './store'
 import reportWebVitals from './reportWebVitals';
 import { PersistGate } from 'redux-persist/integration/react';
+import { BrowserRouter } from 'react-router-dom';
 
 
 const history = createBrowserHistory()
@@ -19,9 +20,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor(history)}>
-      <ConnectedRouter history={history}>
+      <BrowserRouter>
         <App />
-      </ConnectedRouter>
+      </BrowserRouter>
     </PersistGate>
   </Provider>
 )

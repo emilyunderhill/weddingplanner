@@ -2,13 +2,21 @@ import React from 'react';
 import './App.scss';
 import LandingPage from './pages/LandingPage';
 import Navbar from './components/Navbar';
+import { ROUTE_DASHBOARD } from './library/routes';
+import PlanningDashboard from './pages/PlanningDashboard.tsx';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      <Navbar />
-      <LandingPage />
-    </div>
+    <>
+        <Navbar />
+        <Routes>
+          <Route path={ROUTE_DASHBOARD} Component={PlanningDashboard}>
+          </Route>
+          <Route path="/" Component={LandingPage}>
+          </Route>
+        </Routes>
+    </>
   );
 }
 
