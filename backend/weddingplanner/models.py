@@ -1,6 +1,7 @@
+from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
-
+from django.utils.translation import gettext_lazy as _
 
 class UserAccountManager(BaseUserManager):
     def create_user(self, email, first_name, last_name, password=None):
@@ -61,3 +62,72 @@ class Wedding(models.Model):
         user.save()
 
         return wedding
+
+class ChecklistItem(models.Model):
+    class ChecklistStatus(models.IntegerChoices):
+        OPEN = 1, _('Open')
+        COMPLETED = 2, _('Completed')
+
+    wedding = models.ForeignKey(
+        Wedding,
+        on_delete=models.CASCADE
+    )
+    status = models.IntegerField(
+        choices=ChecklistStatus.choices,
+        default=ChecklistStatus.OPEN
+    )
+    title = models.CharField(max_length=150)
+    priority = models.IntegerField(default=1)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    created_by = models.ForeignKey(
+        UserAccount,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='checklist_created_by',
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+    updated_by = models.ForeignKey(
+        UserAccount,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='checklist_updated_by',
+    )
+
+    def create_checklist_item(title, user: UserAccount):
+        checklist_item = ChecklistItem(
+            created_by=user,
+            title=title,
+            updated_by=user,
+        )
+        checklist_item.save()
+
+        return checklist_item
+
+    def update(self: 'ChecklistItem', user: UserAccount):
+        self.updated_at = datetime.now
+        self.updated_by = user
+        self.save
+
+    def complete(self: 'ChecklistItem', user: UserAccount):
+        self.status = 2
+        self.update(user)
+
+        return self
+
+    def open(self: 'ChecklistItem', user: UserAccount):
+        self.status = 1
+        self.update(user)
+
+        return self
+
+    def updateTitle(self: 'ChecklistItem', title: str, user: UserAccount):
+        self.title = title
+        self.update(user)
+
+        return self
+
+    def updatePriority(self: 'ChecklistItem', priority: int, user: UserAccount):
+        self.priority = priority
+        self.update()
+
+        return self

@@ -20,8 +20,7 @@ class RegisterView(APIView):
         user = serializer.create(serializer.validated_data)
         response = UserSerializer(user)
 
-        wedding = Wedding.create_wedding(user=user)
-        response.data.wedding_id = wedding.id
+        Wedding.create_wedding(user=user)
 
         return Response(response.data, status.HTTP_201_CREATED)
 
