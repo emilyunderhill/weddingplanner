@@ -1,15 +1,16 @@
 import React, { FC } from "react";
 import Button from "../../components/Button";
+import PageContainer from "../../components/PageContainer";
 
 const PlanningDashboard: FC = () => {
   return (
-    <div>
+    <PageContainer>
       <Button
         action={() => null}
         content="Create checklist"
         variant="primary"
       />
-    </div>
+    </PageContainer>
   )
 }
 
