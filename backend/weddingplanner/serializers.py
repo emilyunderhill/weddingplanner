@@ -4,6 +4,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.core import exceptions
 
+from models import ChecklistItem
+
 User = get_user_model()
 
 class UserCreateSerializer(serializers.ModelSerializer):
@@ -38,4 +40,9 @@ class UserCreateSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email')
+        fields = ('first_name', 'last_name', 'email')
+
+class ChecklistItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model: ChecklistItem
+        fields = ('title', 'status', )

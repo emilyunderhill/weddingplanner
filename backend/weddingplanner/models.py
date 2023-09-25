@@ -43,7 +43,12 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    wedding = models.ForeignKey('Wedding', on_delete=models.CASCADE, null=True)
+    wedding = models.ForeignKey(
+        'Wedding',
+        on_delete=models.CASCADE,
+        null=True,
+        related_name='users',
+    )
 
     objects = UserAccountManager()
 
@@ -70,7 +75,8 @@ class ChecklistItem(models.Model):
 
     wedding = models.ForeignKey(
         Wedding,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='checklist_items',
     )
     status = models.IntegerField(
         choices=ChecklistStatus.choices,
@@ -83,14 +89,14 @@ class ChecklistItem(models.Model):
         UserAccount,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='checklist_created_by',
+        related_name='checklist_created_bys',
     )
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(
         UserAccount,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='checklist_updated_by',
+        related_name='checklist_updated_bys',
     )
 
     def create_checklist_item(title, user: UserAccount):
@@ -131,3 +137,6 @@ class ChecklistItem(models.Model):
         self.update()
 
         return self
+
+    def __str__(self) -> str:
+        return self.title
