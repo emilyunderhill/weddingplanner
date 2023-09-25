@@ -4,8 +4,7 @@ from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 
 from .models import Wedding
-from .serializers import UserCreateSerializer, UserSerializer
-from django.core import serializers
+from .serializers import ChecklistItemSerializer, UserCreateSerializer, UserSerializer
 
 User = get_user_model()
 
@@ -39,8 +38,9 @@ class RetrieveCheckList(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        wedding = Wedding.objects.get(user=request.user)
+        user = request.user
+        wedding = user.wedding
         checklist_items = wedding.checklist_items.all()
-        json_items = serializers.serialize(checklist_items)
+        checklist_items = ChecklistItemSerializer(checklist_items, many=True)
 
-        return Response(json_items, status.HTTP_200_OK, content_type='application/json')
+        return Response(checklist_items.data, status.HTTP_200_OK, content_type='application/json')

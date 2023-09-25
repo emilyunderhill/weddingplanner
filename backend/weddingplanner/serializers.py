@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.core import exceptions
 
-from models import ChecklistItem
+from weddingplanner.models import ChecklistItem
 
 User = get_user_model()
 
@@ -42,7 +42,16 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('first_name', 'last_name', 'email')
 
+class UserNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name')
+
+
 class ChecklistItemSerializer(serializers.ModelSerializer):
+    created_by = UserNameSerializer(read_only=True)
+    updated_by = UserNameSerializer(read_only=True)
+
     class Meta:
         model: ChecklistItem
-        fields = ('title', 'status', )
+        fields = ('title', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at', 'title', 'priority')

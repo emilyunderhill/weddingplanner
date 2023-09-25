@@ -59,7 +59,7 @@ const Navbar = () => {
 
   const userContent = (
     <div className="navbar-content">
-      <Link to={ROUTE_DASHBOARD}><a>Home</a></Link>
+      <Link to={ROUTE_DASHBOARD}>Home</Link>
       <FontAwesomeIcon icon={solid("ribbon")} className="heading" />
       <div className="flex-row">
         <Button
