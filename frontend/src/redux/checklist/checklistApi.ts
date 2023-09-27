@@ -1,36 +1,54 @@
-import { createAsyncThunk } from '@reduxjs/toolkit'
-import type { AxiosError } from 'axios'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { CreateChecklistItemArg, CreateChecklistItemResponse, GetChecklistResponse } from './types'
 import useUser from '../../hooks/useUser'
+import { getStoredState } from 'redux-persist'
+import store, { RootState, fetchStoredState } from '../../store'
 
 
-export const getChecklist = createAsyncThunk<any, string, { rejectValue: any }>(
-  'users/register',
-  async (accessToken, thunkAPI) => {
+export const reducerPath = 'checklist'
 
-    try {
-      const res = await fetch(`/api/users/checklist`, {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${accessToken}`
-        },
-      })
+const checklistApi = createApi({
+  reducerPath,
+  baseQuery: fetchBaseQuery({
+    baseUrl: '/api/users/',
+    prepareHeaders: (headers, {getState}) => {
+      const accessToken = getState().auth.accessToken
 
-      const data = await res.json()
-
-      if (res.status === 200) {
-        return data
-      }
-
-      return thunkAPI.rejectWithValue(data)
-    } catch (err) {
-      const error = err as AxiosError<any>
-
-      if (!error.response) {
-        throw err
-      }
-
-      return thunkAPI.rejectWithValue(error.response.data)
+      headers.set('Accept', 'application/json')
+      headers.set('Authorization', `Bearer ${accessToken}`)
     }
-  }
-)
+  }),
+  tagTypes: ['Checklist'],
+  endpoints: (builder) => ({
+    getChecklist: builder.query<GetChecklistResponse, void>({
+      query: () => ({
+        url: 'checklist',
+      }),
+      providesTags: (result) => result
+      ?
+        [
+          ...result.map(({ id }) => ({ type: 'Checklist', id } as const)),
+          { type: 'Checklist', id: 'LIST' },
+        ]
+      :
+        [{ type: 'Checklist', id: 'LIST' }],
+    }),
+    createChecklistItem: builder.mutation<CreateChecklistItemResponse, CreateChecklistItemArg>({
+      query: ({ title }) => {
+        return {
+          url: 'createChecklistItem',
+          method: 'POST',
+          body: { title },
+        }
+      },
+      invalidatesTags: [{ type: 'Checklist', id: 'LIST' }],
+    })
+  })
+})
+
+
+export const { useGetChecklistQuery, useCreateChecklistItemMutation } = checklistApi
+
+export const checklistReducer = checklistApi.reducer
+
+export default checklistApi
