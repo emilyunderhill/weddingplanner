@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.fields import empty
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
@@ -42,16 +43,16 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('first_name', 'last_name', 'email')
 
-class UserNameSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('first_name', 'last_name')
-
-
 class ChecklistItemSerializer(serializers.ModelSerializer):
-    created_by = UserNameSerializer(read_only=True)
-    updated_by = UserNameSerializer(read_only=True)
-
     class Meta:
         model: ChecklistItem
-        fields = ('title', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at', 'title', 'priority')
+        fields = '__all__'
+
+    def create(self, title, priority, user):
+        checklist_item = ChecklistItem.objects.create(
+            title = title,
+            priority = priority,
+            user = user,
+        )
+
+        return checklist_item

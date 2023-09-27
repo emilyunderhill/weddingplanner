@@ -82,7 +82,7 @@ class ChecklistItem(models.Model):
         choices=ChecklistStatus.choices,
         default=ChecklistStatus.OPEN
     )
-    title = models.CharField(max_length=150)
+    title = models.CharField(max_length=150, blank=False)
     priority = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     created_by = models.ForeignKey(
@@ -99,42 +99,44 @@ class ChecklistItem(models.Model):
         related_name='checklist_updated_bys',
     )
 
-    def create_checklist_item(title, user: UserAccount):
+    def save(self: 'ChecklistItem', user: UserAccount):
+        self.updated_at = datetime.now
+        self.updated_by = user
+        super(ChecklistItem, self).save()
+
+    def create(title, priority, user):
         checklist_item = ChecklistItem(
-            created_by=user,
             title=title,
-            updated_by=user,
+            priority=priority,
+            created_by=user,
+            created_at=datetime.now
         )
-        checklist_item.save()
+        checklist_item.save(user)
 
         return checklist_item
 
-    def update(self: 'ChecklistItem', user: UserAccount):
-        self.updated_at = datetime.now
-        self.updated_by = user
-        self.save
 
     def complete(self: 'ChecklistItem', user: UserAccount):
         self.status = 2
-        self.update(user)
+        self.save(user)
 
         return self
 
     def open(self: 'ChecklistItem', user: UserAccount):
         self.status = 1
-        self.update(user)
+        self.save(user)
 
         return self
 
     def updateTitle(self: 'ChecklistItem', title: str, user: UserAccount):
         self.title = title
-        self.update(user)
+        self.save(user)
 
         return self
 
     def updatePriority(self: 'ChecklistItem', priority: int, user: UserAccount):
         self.priority = priority
-        self.update()
+        self.save()
 
         return self
 
