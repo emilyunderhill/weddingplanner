@@ -21,6 +21,7 @@ const useUser = () => {
       isAuthenticated: state.isAuthenticated,
       errors: state.errors,
       isLoading: state.isLoading,
+      accessToken: state.accessToken,
     },
     actions: {
       register: handleRegister,

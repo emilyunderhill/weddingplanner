@@ -6,6 +6,8 @@ import useUser from "../../hooks/useUser";
 import Button from "../Button";
 import LoginModal from "../LoginModal";
 import CreateAccountModal from "../CreateAccountModal";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { ROUTE_DASHBOARD } from "../../library/routes";
 
 const Navbar = () => {
   const {
@@ -16,12 +18,20 @@ const Navbar = () => {
   const [loginModalOpen, setLoginModalOpen] = useState(false)
   const [createModalOpen, setCreateModalOpen] = useState(false)
 
+  const navigate = useNavigate()
+  const location = useLocation()
+
   const {
     actions: { resetErrors },
   } = useUser()
 
   const handleOnLogin = () => {
     setLoginModalOpen(true)
+  }
+
+  const handleOnLogout = () => {
+    logOut()
+    navigate('/')
   }
 
   const noUserContent = (
@@ -49,11 +59,11 @@ const Navbar = () => {
 
   const userContent = (
     <div className="navbar-content">
-      <a>Home</a>
+      <Link to={ROUTE_DASHBOARD}>Home</Link>
       <FontAwesomeIcon icon={solid("ribbon")} className="heading" />
       <div className="flex-row">
         <Button
-          action={() => logOut()}
+          action={handleOnLogout}
           content={
             (
               <div className="flew-row">
@@ -77,9 +87,10 @@ const Navbar = () => {
     setCreateModalOpen(false)
   }
 
+
   return (
     <>
-      <div className="navbar-container">
+      <div className="navbar-container" style={{backgroundColor: location.pathname === '/' ? "transparent" : 'white'}}>
         {isAuthenticated ? userContent : noUserContent}
         <hr />
       </div>
