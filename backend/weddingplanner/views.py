@@ -58,7 +58,8 @@ class CreateCheckListItem(APIView):
         if not checklist_items:
             priority = 1
         else:
-            max_priority = wedding.checklist_items.all().aggregate(Max('priority'))
+            max_priority_dict = wedding.checklist_items.all().aggregate(Max('priority'))
+            max_priority = max_priority_dict['priority__max'] if max_priority_dict['priority__max'] is not None else 0
             priority = max_priority + 1
 
         data = request.data

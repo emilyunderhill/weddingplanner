@@ -45,10 +45,14 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('first_name', 'last_name', 'email')
 
 class ChecklistItemSerializer(serializers.ModelSerializer):
+    created_by = UserSerializer(read_only=True)
+    updated_by = UserSerializer(read_only=True)
+    created_at = serializers.DateTimeField(read_only=True, format="%Y-%m-%d")
+    updated_at = serializers.DateTimeField(read_only=True, format="%Y-%m-%d")
+
     class Meta:
         model = ChecklistItem
         fields = '__all__'
-        read_only_fields = ['created_by', 'updated_by', 'created_at', 'updated_at']
 
     def create(self, validated_data):
         request = self.context.get('request')
@@ -58,4 +62,3 @@ class ChecklistItemSerializer(serializers.ModelSerializer):
 
         checklist_item = ChecklistItem.objects.create(**validated_data)
         return checklist_item
-    
