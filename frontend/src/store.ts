@@ -10,6 +10,7 @@ import { name as authKey } from './redux/auth/userSlice'
 import { UserState } from './redux/auth/types';
 import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 import checklistApi from './redux/checklist/checklistApi';
+import checklistDashboardApi from './redux/dashboard/checklistDashboardApi';
 
 const history = createBrowserHistory()
 
@@ -34,6 +35,7 @@ const initStore = (history: History) => {
       serializableCheck: false
     }).concat(
         checklistApi.middleware,
+        checklistDashboardApi.middleware,
         apiMiddleware,
         routerMiddleware(history),
       ),

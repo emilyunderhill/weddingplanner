@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Max
 
 from .models import Wedding
-from .serializers import ChecklistItemSerializer, UserCreateSerializer, UserSerializer
+from .serializers import ChecklistItemSerializer, UserCreateSerializer, UserSerializer, ChecklistDashboardSerializer
 
 User = get_user_model()
 
@@ -74,3 +74,22 @@ class CreateCheckListItem(APIView):
         serializer.save(updated_by=user)
 
         return Response(serializer.data, status.HTTP_200_OK)
+
+class CheckListDashboard(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        wedding = user.wedding
+        all_checklist_items = wedding.checklist_items.all()
+        open_checklist_items = all_checklist_items.filter(status=1)
+        progress = ( (all_checklist_items.count() - open_checklist_items.count()) / all_checklist_items.count()) * 100
+
+        checklist_items = ChecklistItemSerializer(open_checklist_items[:5], many=True)
+
+        data = {
+            'checklist_items': checklist_items.data,
+            'progress': progress
+        }
+
+        return Response(data, status.HTTP_200_OK, content_type='application/json')

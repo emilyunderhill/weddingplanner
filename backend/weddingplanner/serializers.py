@@ -62,3 +62,7 @@ class ChecklistItemSerializer(serializers.ModelSerializer):
 
         checklist_item = ChecklistItem.objects.create(**validated_data)
         return checklist_item
+
+class ChecklistDashboardSerializer(serializers.Serializer):
+    checklist_items = ChecklistItemSerializer(default=[], many=True, read_only=True)
+    progress = serializers.IntegerField(default=0, read_only=True)
