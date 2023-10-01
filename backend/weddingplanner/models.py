@@ -73,6 +73,9 @@ class ChecklistItem(models.Model):
         OPEN = 1, _('Open')
         COMPLETED = 2, _('Completed')
 
+    class Meta:
+        ordering = ['priority']
+
     wedding = models.ForeignKey(
         Wedding,
         on_delete=models.CASCADE,
@@ -99,46 +102,14 @@ class ChecklistItem(models.Model):
         related_name='checklist_updated_bys',
     )
 
-    def save(self: 'ChecklistItem', user: UserAccount):
-        self.updated_at = datetime.now
-        self.updated_by = user
-        super(ChecklistItem, self).save()
+    def save(self, *args, **kwargs):
+        self.updated_at = datetime.now()
 
-    def create(title, priority, user):
-        checklist_item = ChecklistItem(
-            title=title,
-            priority=priority,
-            created_by=user,
-            created_at=datetime.now
-        )
-        checklist_item.save(user)
+        updated_by = kwargs.pop('updated_by', None)
+        if updated_by:
+            self.updated_by = updated_by
 
-        return checklist_item
-
-
-    def complete(self: 'ChecklistItem', user: UserAccount):
-        self.status = 2
-        self.save(user)
-
-        return self
-
-    def open(self: 'ChecklistItem', user: UserAccount):
-        self.status = 1
-        self.save(user)
-
-        return self
-
-    def updateTitle(self: 'ChecklistItem', title: str, user: UserAccount):
-        self.title = title
-        self.save(user)
-
-        return self
-
-    def updatePriority(self: 'ChecklistItem', priority: int, user: UserAccount):
-        self.priority = priority
-        self.save()
-
-        return self
+        super(ChecklistItem, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.title

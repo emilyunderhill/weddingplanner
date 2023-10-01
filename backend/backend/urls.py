@@ -20,5 +20,5 @@ urlpatterns = [
     path('api/auth/token/obtain/', TokenObtainPairView.as_view()),
     path('api/auth/token/refresh/', TokenRefreshView.as_view()),
     path('api/auth/token/verify/', TokenVerifyView.as_view()),
-    path('api/users/', include('weddingplanner.urls')),
+    path('api/weddingplanner/', include('weddingplanner.urls')),
 ]

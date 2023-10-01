@@ -1,3 +1,4 @@
+from datetime import datetime
 from rest_framework.views import APIView
 from rest_framework import permissions, status
 from rest_framework.response import Response
@@ -5,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Max
 
 from .models import Wedding
-from .serializers import ChecklistItemSerializer, UserCreateSerializer, UserSerializer
+from .serializers import ChecklistItemSerializer, UserCreateSerializer, UserSerializer, ChecklistDashboardSerializer
 
 User = get_user_model()
 
@@ -53,24 +54,42 @@ class CreateCheckListItem(APIView):
         user = request.user
         wedding = user.wedding
         checklist_items = wedding.checklist_items.all()
+
         if not checklist_items:
             priority = 1
         else:
-            max_priority = wedding.checklist_items.all().aggregate(Max('priority'))
+            max_priority_dict = wedding.checklist_items.all().aggregate(Max('priority'))
+            max_priority = max_priority_dict['priority__max'] if max_priority_dict['priority__max'] is not None else 0
             priority = max_priority + 1
 
-        title = request.data['title']
+        data = request.data
+        data['priority'] = priority
+        data['wedding'] = wedding.id
 
-        serializer = ChecklistItemSerializer().create(
-            title=title,
-            priority=priority,
-            user=user
-        )
+        serializer = ChecklistItemSerializer(data=data, context={'request': request})
 
         if not serializer.is_valid():
             return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
-        checklist_item = serializer.create(serializer.validated_data)
-        response = ChecklistItemSerializer(checklist_item)
+        serializer.save(updated_by=user)
 
-        return Response(response.data, status.HTTP_200_OK)
+        return Response(serializer.data, status.HTTP_200_OK)
+
+class CheckListDashboard(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        wedding = user.wedding
+        all_checklist_items = wedding.checklist_items.all()
+        open_checklist_items = all_checklist_items.filter(status=1)
+        progress = ( (all_checklist_items.count() - open_checklist_items.count()) / all_checklist_items.count()) * 100
+
+        checklist_items = ChecklistItemSerializer(open_checklist_items[:5], many=True)
+
+        data = {
+            'checklist_items': checklist_items.data,
+            'progress': progress
+        }
+
+        return Response(data, status.HTTP_200_OK, content_type='application/json')
