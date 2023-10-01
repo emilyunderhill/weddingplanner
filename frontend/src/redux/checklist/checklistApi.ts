@@ -1,8 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { CreateChecklistItemArg, CreateChecklistItemResponse, GetChecklistResponse } from './types'
-import useUser from '../../hooks/useUser'
-import { getStoredState } from 'redux-persist'
-import store, { RootState, fetchStoredState } from '../../store'
+import { RootState } from '../../store'
 
 
 export const reducerPath = 'checklist'
@@ -10,9 +8,10 @@ export const reducerPath = 'checklist'
 const checklistApi = createApi({
   reducerPath,
   baseQuery: fetchBaseQuery({
-    baseUrl: '/api/users/',
+    baseUrl: '/api/weddingplanner/',
     prepareHeaders: (headers, {getState}) => {
-      const accessToken = getState().auth.accessToken
+      const rootState = getState() as RootState
+      const accessToken = rootState.auth.accessToken
 
       headers.set('Accept', 'application/json')
       headers.set('Authorization', `Bearer ${accessToken}`)

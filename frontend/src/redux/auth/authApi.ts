@@ -1,12 +1,9 @@
 import { GetUserDetailsRespone, LoginArg, LoginResponse, RegisterArg, RegisterResponse, ValidationError } from './types';
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import type { AxiosError } from 'axios'
-import useUser from '../../hooks/useUser';
-import useAppSelector from '../../hooks/useAppSelector';
-import { selectUser } from './userSlice';
 
 export const register = createAsyncThunk<RegisterResponse, RegisterArg, { rejectValue: ValidationError }>(
-  'users/register',
+  'weddingplanner/register',
   async ({ email, firstName, lastName, password }, thunkAPI) => {
     const body = JSON.stringify({
       first_name: firstName,
@@ -16,7 +13,7 @@ export const register = createAsyncThunk<RegisterResponse, RegisterArg, { reject
     })
 
     try {
-      const res = await fetch(`/api/users/register`, {
+      const res = await fetch(`/api/weddingplanner/register`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -92,7 +89,7 @@ export const login = createAsyncThunk<LoginResponse, LoginArg, { rejectValue: Va
 )
 
 export const getUserDetails = createAsyncThunk<GetUserDetailsRespone, void, { rejectValue: ValidationError }>(
-  'users/profile',
+  'weddingplanner/profile',
   async (_, thunkAPI) => {
     const storedUserData = window.localStorage.getItem('persist:user')
     if (!storedUserData) {
@@ -107,7 +104,7 @@ export const getUserDetails = createAsyncThunk<GetUserDetailsRespone, void, { re
     const accessToken = JSON.parse(storedAuthData).accessToken
 
     try {
-      const res = await fetch('/api/users/profile', {
+      const res = await fetch('/api/weddingplanner/profile', {
         method: 'GET',
         headers: {
           Accept: 'application/json',
