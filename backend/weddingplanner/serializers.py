@@ -1,3 +1,4 @@
+from datetime import datetime
 from rest_framework import serializers
 from rest_framework.fields import empty
 from rest_framework.validators import UniqueValidator
@@ -5,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.core import exceptions
 
-from weddingplanner.models import ChecklistItem
+from .models import ChecklistItem
 
 User = get_user_model()
 
@@ -45,14 +46,16 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ChecklistItemSerializer(serializers.ModelSerializer):
     class Meta:
-        model: ChecklistItem
+        model = ChecklistItem
         fields = '__all__'
+        read_only_fields = ['created_by', 'updated_by', 'created_at', 'updated_at']
 
-    def create(self, title, priority, user):
-        checklist_item = ChecklistItem.objects.create(
-            title = title,
-            priority = priority,
-            user = user,
-        )
+    def create(self, validated_data):
+        request = self.context.get('request')
+        user = request.user if request else None
 
+        validated_data['created_by'] = user
+
+        checklist_item = ChecklistItem.objects.create(**validated_data)
         return checklist_item
+    

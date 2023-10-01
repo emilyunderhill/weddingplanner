@@ -1,3 +1,4 @@
+from datetime import datetime
 from rest_framework.views import APIView
 from rest_framework import permissions, status
 from rest_framework.response import Response
@@ -53,24 +54,22 @@ class CreateCheckListItem(APIView):
         user = request.user
         wedding = user.wedding
         checklist_items = wedding.checklist_items.all()
+
         if not checklist_items:
             priority = 1
         else:
             max_priority = wedding.checklist_items.all().aggregate(Max('priority'))
             priority = max_priority + 1
 
-        title = request.data['title']
+        data = request.data
+        data['priority'] = priority
+        data['wedding'] = wedding.id
 
-        serializer = ChecklistItemSerializer().create(
-            title=title,
-            priority=priority,
-            user=user
-        )
+        serializer = ChecklistItemSerializer(data=data, context={'request': request})
 
         if not serializer.is_valid():
             return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
-        checklist_item = serializer.create(serializer.validated_data)
-        response = ChecklistItemSerializer(checklist_item)
+        serializer.save(updated_by=user)
 
-        return Response(response.data, status.HTTP_200_OK)
+        return Response(serializer.data, status.HTTP_200_OK)
