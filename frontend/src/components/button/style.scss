@@ -1,15 +1,16 @@
 @import '../../styles/colors';
 
 .button {
-  border-radius: 5px;
+  border-radius: 1px;
   display: inline-block;
   text-align: center;
   justify-content: center;
   padding: 5px 15px 5px 15px;
   cursor: pointer;
+  max-height: 25px;
 }
 .button:hover {
-  filter: brightness(115%);
+  filter: brightness(150%);
 }
 
 .full-width {
@@ -26,12 +27,21 @@
 }
 
 .button-primary {
-  color: white;
-  background-color: $primary;
+  color: $border;
+  background-color: transparent;
+  border: 1px solid $border;
+  font-size: small;
 };
+
+.button-bold {
+  color: white;
+  background-color: $border;
+  border: white;
+}
 
 .button-destructive {
   fill: $error;
+  color: white;
 }
 
 .button-link-destructive {

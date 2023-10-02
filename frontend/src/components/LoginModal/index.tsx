@@ -91,7 +91,7 @@ const LoginModal: FC<Props> = ({ isOpen, onClose }) => {
       <Button
         action={handleOnLogin}
         content="Login"
-        variant="primary"
+        variant="bold"
         isLoading={isLoading}
       />
     </div>

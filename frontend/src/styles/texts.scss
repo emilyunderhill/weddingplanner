@@ -1,4 +1,5 @@
 @import './colors';
+@import "@fontsource/dancing-script";
 
 .paragraph {
   text-align: justify;
@@ -38,4 +39,11 @@
   margin-top: 5px;
   padding-top: 0;
   font-size: x-small;
+}
+
+.logo {
+  font-family: "Dancing Script";
+  color: $border;
+  font-size: large;
+  font-weight: bold;
 }

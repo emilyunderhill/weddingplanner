@@ -11,7 +11,7 @@ const PlanningDashboard: FC = () => {
 
   return (
     <>
-      <PageContainer>
+      <PageContainer transparentBackground={true}>
         <div>
           <h1>Hello {user?.firstName}!</h1>
         </div>

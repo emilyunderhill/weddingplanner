@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import './style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import useUser from "../../hooks/useUser";
 import Button from "../Button";
 import LoginModal from "../LoginModal";
 import CreateAccountModal from "../CreateAccountModal";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { ROUTE_DASHBOARD } from "../../library/routes";
+import { ROUTE_DASHBOARD, ROUTE_LOGIN, ROUTE_REGISTER } from "../../library/routes";
 
 const Navbar = () => {
   const {
@@ -36,19 +36,16 @@ const Navbar = () => {
 
   const noUserContent = (
     <div className="navbar-content">
-      <Button
-        content="Start planning"
-        action={() => setCreateModalOpen(true)}
-        variant="link"
-      />
-      <FontAwesomeIcon icon={solid("ribbon")} className="heading" />
+      <div className="flex-row heading">
+        <FontAwesomeIcon icon={solid("champagne-glasses")} />
+        <p className="logo ml-sm">Tie The Knot</p>
+      </div>
       <Button
         action={() => handleOnLogin()}
         content={
           (
             <div className="flew-row">
               <a>Log in</a>
-              <FontAwesomeIcon icon={solid("chevron-down")} size="xs" className="link ml-sm" />
             </div>
           )
         }
@@ -59,8 +56,12 @@ const Navbar = () => {
 
   const userContent = (
     <div className="navbar-content">
-      <Link to={ROUTE_DASHBOARD}>Home</Link>
-      <FontAwesomeIcon icon={solid("ribbon")} className="heading" />
+      <Link to={ROUTE_DASHBOARD}>
+        <div className="flex-row heading">
+          <FontAwesomeIcon icon={solid("champagne-glasses")} />
+          <p className="logo ml-sm">Tie The Knot</p>
+        </div>
+      </Link>
       <div className="flex-row">
         <Button
           action={handleOnLogout}
@@ -87,12 +88,17 @@ const Navbar = () => {
     setCreateModalOpen(false)
   }
 
+  const home_paths = [
+    ROUTE_LOGIN,
+    ROUTE_REGISTER,
+    '/',
+  ]
+
 
   return (
     <>
-      <div className="navbar-container" style={{backgroundColor: location.pathname === '/' ? "transparent" : 'white'}}>
+      <div className="navbar-container" style={{backgroundColor: home_paths.includes(location.pathname) ? "transparent" : 'white'}}>
         {isAuthenticated ? userContent : noUserContent}
-        <hr />
       </div>
       <LoginModal
         isOpen={loginModalOpen}

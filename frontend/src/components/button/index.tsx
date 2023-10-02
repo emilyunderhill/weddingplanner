@@ -10,6 +10,7 @@ type Variants = {
   subtle: 'subtle',
   link: 'link',
   linkDestructive: 'link-destructive',
+  bold: 'bold',
 }
 
 type VariantKey = keyof Variants
@@ -45,6 +46,8 @@ const Button: FC<Props> = ({
         return 'button-link link'
       case 'link-destructive':
         return 'link button-link-destructive'
+      case 'bold':
+        return 'button-bold'
       default:
         break;
     }
@@ -52,7 +55,7 @@ const Button: FC<Props> = ({
 
   return (
     <div className={`button ${variantClass()} ${isFullWidth ? 'full-width' : ''}`} onClick={action}>
-      {isLoading ? <FontAwesomeIcon icon={solid("spinner")} spin={true} /> : content}
+      {isLoading ? <FontAwesomeIcon icon={solid("circle-notch")} spin={true} /> : content}
     </div>
   )
 }

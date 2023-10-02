@@ -1,34 +1,20 @@
-import React, { useContext, useState } from "react"
-import useIsMobile from "../../../hooks/useIsMobile"
-import heroImg from '../../../assets/images/hero-image-6.jpg'
-import Button from "../../../components/Button"
-import CreateAccountModal from "../../../components/CreateAccountModal"
-import LoginModal from "../../../components/LoginModal"
-import '../style.scss'
-import useUser from "../../../hooks/useUser"
+import React from "react"
+import useIsMobile from "../../hooks/useIsMobile"
+import Button from "../../components/Button"
+import { useNavigate } from "react-router-dom"
+import { ROUTE_LOGIN, ROUTE_REGISTER } from "../../library/routes"
+import heroImg from '../../assets/images/heroImage8.jpg'
+import './style.scss'
 
-const HeroImage = () => {
+
+const LandingPage = () => {
   const { isMobile } = useIsMobile()
-  const [createOpen, setCreateOpen] = useState(false)
-  const [loginOpen, setLoginOpen] = useState(false)
 
-  const {
-    actions: { resetErrors },
-  } = useUser()
-
-  const handleOnCloseLoginModal = () => {
-    resetErrors()
-    setLoginOpen(false)
-  }
-
-  const handleOnCloseCreateModal = () => {
-    resetErrors()
-    setCreateOpen(false)
-  }
+  const navigate = useNavigate()
 
   return (
     <div className="hero-image" style={{ backgroundImage: `url(${heroImg})` }}>
-      <div className="hero-image-text-container" style={{ maxWidth: isMobile ? '100%': '33%' }}>
+      <div className="hero-image-text-container" style={{ maxWidth: isMobile ? '100%' : '33%' }}>
         <h1>
           Start planning your perfect wedding
         </h1>
@@ -52,23 +38,21 @@ const HeroImage = () => {
           alignItems: 'center',
         }}>
           <Button
-            action={() => setCreateOpen(true)}
+            action={() => navigate(ROUTE_REGISTER)}
             content={isMobile ? 'Create' : 'Create wedding'}
             variant={"primary"}
           />
           <div className="ml-auto">
             <Button
-              action={() => setLoginOpen(true)}
+              action={() => navigate(ROUTE_LOGIN)}
               content={isMobile ? 'Log in' : 'Log in to an existing account'}
               variant="link"
             />
           </div>
         </div>
       </div>
-      <CreateAccountModal isOpen={createOpen} onClose={handleOnCloseCreateModal} />
-      <LoginModal isOpen={loginOpen} onClose={handleOnCloseLoginModal} />
     </div>
   )
 }
 
-export default HeroImage
+export default LandingPage
