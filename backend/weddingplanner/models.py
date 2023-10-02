@@ -60,11 +60,57 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
 class Wedding(models.Model):
     def create_wedding(user: UserAccount):
+        # Add user relation to wedding
         wedding = Wedding()
         wedding.save()
 
         user.wedding = wedding
         user.save()
+
+        # Add default checklist items
+        default_checklist_items = [
+            {
+                'title': 'Create guestlist',
+                'priority': 1,
+            },
+            {
+                'title': 'Calculate budget',
+                'priority': 2,
+            },
+            {
+                'title': 'Book venue',
+                'priority': 3,
+            },
+            {
+                'title': 'Send save the dates',
+                'priority': 4,
+            },
+            {
+                'title': 'Book caterers',
+                'priority': 5,
+            },
+            {
+                'title': 'Book entertainment',
+                'priority': 6,
+            },
+            {
+                'title': 'Book photographer/videographer',
+                'priority': 7,
+            },
+            {
+                'title': 'Book hair and makeup',
+                'priority': 8,
+            },
+            {
+                'title': 'Send official invites',
+                'priority': 9,
+            }
+        ]
+
+        for data in default_checklist_items:
+            checklist_item = ChecklistItem(**data)
+            checklist_item.wedding = wedding
+            checklist_item.save()
 
         return wedding
 

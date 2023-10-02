@@ -13,6 +13,10 @@ type Props = {
   onClose: () => void
 }
 
+interface KeyboardEvent {
+  key: string
+}
+
 const CreateAccountModal: FC<Props> = ({ isOpen, onClose }) => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -64,7 +68,7 @@ const CreateAccountModal: FC<Props> = ({ isOpen, onClose }) => {
       <h2 className="heading mt-sm mb-2m">
         Your details
       </h2>
-      <div className="grid-2" onKeyDown={handleOnRegister}>
+      <div className="grid-2" onKeyDown={handleOnKeyDown}>
         <div className="pr-sm">
           <Input
             name="first_name"
