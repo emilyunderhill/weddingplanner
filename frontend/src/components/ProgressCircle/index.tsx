@@ -69,7 +69,7 @@ const Pie: FC<Props> = ({ percentage, strokeWidth, size, label }) => {
         </g>
       </svg>
       {label && (
-        <p className="ml-sm" style={{color: colour}}><strong>{percentage}%</strong></p>
+        <p className="ml-sm" style={{color: colour}}><strong>{percentage.toFixed(0)}%</strong></p>
       )}
     </div>
   )

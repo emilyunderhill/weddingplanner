@@ -3,6 +3,7 @@ import { ChecklistItem } from "../checklist/types"
 type GetChecklistDashboardResponse = {
   checklist_items: ChecklistItem[]
   progress: number
+  has_more: boolean
 }
 
 type CompleteChecklistItemResponse = {
@@ -12,3 +13,6 @@ type CompleteChecklistItemResponse = {
 type CompleteChecklistItemArg = {
   id: number
 }
+
+type DeleteChecklistItemResponse = CompleteChecklistItemResponse
+type DeleteChecklistItemArg = CompleteChecklistItemArg

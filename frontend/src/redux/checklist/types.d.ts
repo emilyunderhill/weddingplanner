@@ -11,6 +11,7 @@ export type ChecklistItem = {
 
 export type CreateChecklistItemArg = {
   title: string
+  topPriority?: boolean
 }
 
 export type CreateChecklistItemResponse = ChecklistItem

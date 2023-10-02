@@ -1,0 +1,75 @@
+@import '../../styles/colors';
+
+.toggle-switch {
+  position: relative;
+  width: 36px;
+  display: inline-block;
+  text-align: left;
+}
+
+.checkbox {
+  display: none;
+}
+
+.label {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  border: 0 solid $grey;
+  border-radius: 22px;
+}
+
+.inner {
+  display: block;
+  width: 200%;
+  margin-left: -100%;
+  transition: margin 0.3s ease-in 0s;
+}
+
+.inner:before,
+.inner:after {
+  float: left;
+  width: 50%;
+  height: 22px;
+  padding: 0;
+  color: #fff;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+
+.inner:before {
+  content: "";
+  background-color: $success;
+  color: #fff;
+  padding-left: 20px;
+}
+
+.inner:after {
+  content: "";
+  background-color: $grey;
+  color: #fff;
+  text-align: right;
+  padding-right: 5px;
+}
+
+.switch {
+  display: block;
+  width: 12px;
+  margin: 5px;
+  background: #fff;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 14px;
+  border: 0 solid #bbb;
+  border-radius: 50%;
+  transition: all 0.3s ease-in 0s;
+}
+
+.checkbox:checked+.label .inner {
+  margin-left: 0;
+}
+
+.checkbox:checked+.label .switch {
+  right: 0px;
+}

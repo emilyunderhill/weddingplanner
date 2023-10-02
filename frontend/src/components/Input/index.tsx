@@ -9,7 +9,7 @@ type Props<T> = {
   value: T
   onChange: (value: T) => void
   type?: string
-  errors?: ValidationError
+  errors?: Record<string, any>
   placeholder?: string
 }
 
@@ -42,7 +42,7 @@ const Input: FC<Props<T>> = ({
 
   return (
     <div className={`w-full ${labelPosition === 'top' ? 'flex-column' : 'flex-row'}`}>
-      <p className="mb-0 pb-0">
+      <p className="mb-0 pb-0 mr-med">
         {label}
       </p>
       <input

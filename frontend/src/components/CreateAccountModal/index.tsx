@@ -4,7 +4,7 @@ import Button from "../Button";
 import Input from "../Input";
 import useUser from "../../hooks/useUser";
 import { ValidationError } from "../../redux/auth/types";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ROUTE_DASHBOARD } from "../../library/routes";
 
 
@@ -21,7 +21,7 @@ const CreateAccountModal: FC<Props> = ({ isOpen, onClose }) => {
 
   const [errorData, setErrorData] = useState<undefined | ValidationError>(undefined)
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const {
     actions: { register, resetErrors },

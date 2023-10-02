@@ -54,15 +54,22 @@ class CreateCheckListItem(APIView):
         user = request.user
         wedding = user.wedding
         checklist_items = wedding.checklist_items.all()
+        data = request.data
 
-        if not checklist_items:
+        top_priority = data['top_priority']
+
+        if top_priority or not checklist_items:
             priority = 1
         else:
             max_priority_dict = wedding.checklist_items.all().aggregate(Max('priority'))
             max_priority = max_priority_dict['priority__max'] if max_priority_dict['priority__max'] is not None else 0
             priority = max_priority + 1
 
-        data = request.data
+        if top_priority and checklist_items:
+            for item in checklist_items:
+                item.priority += 1
+                item.save(updated_by=user)
+
         data['priority'] = priority
         data['wedding'] = wedding.id
 
@@ -79,17 +86,23 @@ class CheckListDashboard(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
+        max_count = 5
         user = request.user
         wedding = user.wedding
         all_checklist_items = wedding.checklist_items.all()
         open_checklist_items = all_checklist_items.filter(status=1)
-        progress = ( (all_checklist_items.count() - open_checklist_items.count()) / all_checklist_items.count()) * 100
+        count_all_items = all_checklist_items.count()
+        count_open_items = open_checklist_items.count()
+        progress = ( (count_all_items - count_open_items) / count_all_items) * 100
 
-        checklist_items = ChecklistItemSerializer(open_checklist_items[:5], many=True)
+        checklist_items = ChecklistItemSerializer(open_checklist_items[:max_count], many=True)
+
+        has_more = count_open_items - max_count if count_open_items >= max_count else 0
 
         data = {
             'checklist_items': checklist_items.data,
-            'progress': progress
+            'progress': progress,
+            'has_more': has_more,
         }
 
         return Response(data, status.HTTP_200_OK, content_type='application/json')
@@ -118,3 +131,28 @@ class CompleteChecklistItem(APIView):
 
         checklist_item.complete(updated_by=user)
         return Response({'success': True}, status.HTTP_200_OK)
+
+class deleteChecklistItem(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        checklist_item_id = request.data['checklist_item_id']
+        if not checklist_item_id:
+            response = {
+                'success': False,
+                'errors': 'The checklist item id was not included in the request'
+            }
+            return Response(response, status.HTTP_400_BAD_REQUEST)
+
+        checklist_item = ChecklistItem.objects.get(pk=checklist_item_id)
+
+        if not checklist_item:
+            errors = {
+                'success': False,
+                'errors': 'The checklist item could not be found'
+            }
+            return Response(errors, status.HTTP_404_NOT_FOUND)
+
+        checklist_item.delete()
+        return Response({'success': True}, status.HTTP_200_OK)
+

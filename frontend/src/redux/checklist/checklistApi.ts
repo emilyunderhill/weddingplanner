@@ -35,7 +35,7 @@ const checklistApi = createApi({
     createChecklistItem: builder.mutation<CreateChecklistItemResponse, CreateChecklistItemArg>({
       query: ({ title }) => {
         return {
-          url: 'createChecklistItem',
+          url: 'checklist/create',
           method: 'POST',
           body: { title },
         }
