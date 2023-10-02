@@ -20,6 +20,7 @@ type Props = {
   percentage: number
   size: number
   strokeWidth: number
+  label: boolean
 }
 
 const getColour = (percentage?: number) => {
@@ -34,18 +35,18 @@ const getColour = (percentage?: number) => {
   return percentage < 66.66 ? MED_COLOUR : HIGH_COLOUR
 }
 
-const Circle = ({ percentage, size, strokeWidth }: Props) => {
-  const center = getCenter(size)
-  const r = getRadius(center, strokeWidth)
+const Circle = ({ percentage, size, strokeWidth }: Partial<Props>) => {
+  const center = getCenter(size ?? 0)
+  const r = getRadius(center, strokeWidth ?? 0)
   const circ = 2 * Math.PI * r
-  const strokePct = ((100 - (percentage)) * circ) / 100
+  const strokePct = ((100 - (percentage ?? 0)) * circ) / 100
   const colour = getColour(percentage)
 
   return (
     <circle
       r={r}
-      cx={size/2}
-      cy={size/2}
+      cx={size ? size/2 : 0}
+      cy={size ? size/2 : 0}
       fill="transparent"
       stroke={strokePct !== circ ? colour : ""}
       strokeWidth={strokeWidth}
@@ -56,30 +57,21 @@ const Circle = ({ percentage, size, strokeWidth }: Props) => {
   )
 }
 
-const Text = ({ percentage, size }: Partial<Props>) => {
-  return (
-    <text
-      x={size ? size/2 : 0}
-      y={size ? size/2 : 0}
-      dominantBaseline="central"
-      textAnchor="middle"
-      fontSize={"smaller"}
-    >
-      {percentage?.toFixed(0)}%
-    </text>
-  )
-}
-
-const Pie: FC<Props> = ({ percentage, strokeWidth, size }) => {
+const Pie: FC<Props> = ({ percentage, strokeWidth, size, label }) => {
   const pct = cleanPercentage(percentage)
+  const colour = getColour(percentage)
   return (
-    <svg width={size} height={size}>
-      <g transform={`rotate(-90 ${size/2} ${size/2})`}>
-        <Circle percentage={0} strokeWidth={strokeWidth} size={size} />
-        <Circle percentage={pct} strokeWidth={strokeWidth} size={size} />
-      </g>
-      {/* <Text percentage={pct} size={size} /> */}
-    </svg>
+    <div className="flex-row">
+      <svg width={size} height={size}>
+        <g transform={`rotate(-90 ${size/2} ${size/2})`}>
+          <Circle percentage={0} strokeWidth={strokeWidth} size={size} />
+          <Circle percentage={pct} strokeWidth={strokeWidth} size={size} />
+        </g>
+      </svg>
+      {label && (
+        <p className="ml-sm" style={{color: colour}}><strong>{percentage}%</strong></p>
+      )}
+    </div>
   )
 }
 

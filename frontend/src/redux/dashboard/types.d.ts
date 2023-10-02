@@ -4,3 +4,11 @@ type GetChecklistDashboardResponse = {
   checklist_items: ChecklistItem[]
   progress: number
 }
+
+type CompleteChecklistItemResponse = {
+  success: boolean
+}
+
+type CompleteChecklistItemArg = {
+  id: number
+}

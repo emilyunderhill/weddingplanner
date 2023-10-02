@@ -1,6 +1,6 @@
 import React, { ReactNode, useContext, useMemo } from 'react';
 import { FC } from 'react'
-import '../../style.scss'
+import '../style.scss'
 import useIsMobile from '../../../hooks/useIsMobile';
 
 export type Position = 'primary' | 'secondary' | 'tertiary'

@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from django.db.models import Max
 
-from .models import Wedding
+from .models import ChecklistItem, Wedding
 from .serializers import ChecklistItemSerializer, UserCreateSerializer, UserSerializer, ChecklistDashboardSerializer
 
 User = get_user_model()
@@ -93,3 +93,28 @@ class CheckListDashboard(APIView):
         }
 
         return Response(data, status.HTTP_200_OK, content_type='application/json')
+
+class CompleteChecklistItem(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        checklist_item_id = request.data['checklist_item_id']
+        if not checklist_item_id:
+            response = {
+                'success': False,
+                'errors': 'The checklist item id was not included in the request'
+            }
+            return Response(response, status.HTTP_400_BAD_REQUEST)
+
+        checklist_item = ChecklistItem.objects.get(pk=checklist_item_id)
+
+        if not checklist_item:
+            errors = {
+                'success': False,
+                'errors': 'The checklist item could not be found'
+            }
+            return Response(errors, status.HTTP_404_NOT_FOUND)
+
+        checklist_item.complete(updated_by=user)
+        return Response({'success': True}, status.HTTP_200_OK)

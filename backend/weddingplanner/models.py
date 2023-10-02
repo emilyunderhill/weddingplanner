@@ -111,5 +111,9 @@ class ChecklistItem(models.Model):
 
         super(ChecklistItem, self).save(*args, **kwargs)
 
+    def complete(self, *args, **kwargs):
+        self.status = 2
+        self.save(*args, **kwargs)
+
     def __str__(self) -> str:
         return self.title

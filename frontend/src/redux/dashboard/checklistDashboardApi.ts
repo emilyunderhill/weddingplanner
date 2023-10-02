@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { GetChecklistDashboardResponse } from './types'
+import { CompleteChecklistItemArg, CompleteChecklistItemResponse, GetChecklistDashboardResponse } from './types'
 import { RootState } from '../../store'
 
 
@@ -8,7 +8,7 @@ export const reducerPath = 'checklistDashboard'
 const checklistDashboardApi = createApi({
   reducerPath,
   baseQuery: fetchBaseQuery({
-    baseUrl: '/api/weddingplanner/dashboard/',
+    baseUrl: '/api/weddingplanner/',
     prepareHeaders: (headers, { getState }) => {
       const rootState = getState() as RootState
       const accessToken = rootState.auth.accessToken
@@ -21,15 +21,25 @@ const checklistDashboardApi = createApi({
   endpoints: (builder) => ({
     getChecklistDashboard: builder.query<GetChecklistDashboardResponse, void>({
       query: () => ({
-        url: 'checklist',
+        url: 'dashboard/checklist',
       }),
       providesTags: ['ChecklistDashboard']
     }),
+    completeChecklistItem: builder.mutation<CompleteChecklistItemResponse, CompleteChecklistItemArg>({
+      query: ({ id }) => {
+        return {
+          url: 'completeChecklistItem',
+          method: 'POST',
+          body: { checklist_item_id: id },
+        }
+      },
+      invalidatesTags: ['ChecklistDashboard']
+    })
   })
 })
 
 
-export const { useGetChecklistDashboardQuery } = checklistDashboardApi
+export const { useGetChecklistDashboardQuery, useCompleteChecklistItemMutation } = checklistDashboardApi
 
 export const checklistReducer = checklistDashboardApi.reducer
 

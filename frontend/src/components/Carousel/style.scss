@@ -1,0 +1,49 @@
+@import '../../styles/colors';
+
+.carousel-wrapper {
+  height: 50vh;
+  background-color: $border;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.carousel-row {
+  height: 100%;
+  display: flex;
+  white-space: nowrap;
+}
+
+.carousel-item-container {
+  height: 100%;
+  display: inline-block;
+}
+
+.carousel-item {
+  margin-left: auto;
+  margin-right: auto;
+  height: 100%;
+  width: 100%;
+  white-space: pre-wrap;
+  transition: transform 400ms ease 200ms;
+}
+
+.carousel-animation {
+  transition: transform 300ms ease 100ms;
+}
+
+.carousel-item-image {
+  height: 80%;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+}
+
+.carousel-item-title {
+  margin-top: 20px;
+  text-align: center;
+
+  >p {
+    color: white;
+  }
+}

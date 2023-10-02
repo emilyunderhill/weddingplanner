@@ -1,0 +1,46 @@
+@import '../../../../styles/colors';
+
+.well-header {
+  border: 1px solid $border;
+  display: flex;
+  flex-direction: row;
+  border-radius: 5px;
+  padding: 10px;
+  align-items: center;
+
+  &.open {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+}
+
+.well-content {
+  border: 1px solid $border-faded;
+  display: flex;
+  flex-direction: column;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding: 10px;
+  transition: height 1s ease-in-out;
+  &.open {
+    height: auto;
+  }
+  &.closed {
+    height: 0;
+    overflow: hidden;
+    padding: 0;
+    border: none;
+  }
+}
+
+.checklist-item-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  align-items: center;
+  transition: height 1s ease-in-out;
+}
+
+.checklist-title {
+  white-space: nowrap;
+  overflow: hidden;
+}

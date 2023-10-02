@@ -1,10 +1,6 @@
-import React, { FC, useState } from "react";
-import Button from "../../components/Button";
+import React, { FC } from "react";
 import PageContainer from "../../components/PageContainer";
 import useUser from "../../hooks/useUser";
-import { useCreateChecklistItemMutation, useGetChecklistQuery } from "../../redux/checklist/checklistApi";
-import Input from "../../components/Input";
-import ProgressCircle from "../../components/ProgressCircle";
 import ChecklistDashboard from "./components/ChecklistDashboard";
 
 const PlanningDashboard: FC = () => {
