@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import Modal from "../../../../../components/Modal";
-import { useCreateChecklistItemMutation } from "../../../../../redux/dashboard/checklistDashboardApi";
+import { useCreateChecklistItemMutation } from "../../../../../redux/checklist/checklistApi";
 import Input from "../../../../../components/Input";
 import Toggle from "../../../../../components/Toggle";
 import Button from "../../../../../components/Button";

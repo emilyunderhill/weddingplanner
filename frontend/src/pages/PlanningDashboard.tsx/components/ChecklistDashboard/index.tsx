@@ -1,11 +1,10 @@
 import React, { FC, useState } from "react"
 import Button from "../../../../components/Button"
 import ProgressCircle from "../../../../components/ProgressCircle"
-import { useCompleteChecklistItemMutation, useDeleteChecklistItemMutation, useGetChecklistDashboardQuery } from "../../../../redux/dashboard/checklistDashboardApi"
+import { useCompleteChecklistItemMutation, useDeleteChecklistItemMutation, useGetChecklistDashboardQuery } from "../../../../redux/checklist/checklistApi"
 import './style.scss'
 import { regular, solid } from "@fortawesome/fontawesome-svg-core/import.macro"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { ChecklistItem } from "../../../../redux/checklist/types"
 import { useNavigate } from "react-router-dom";
 import { ROUTE_CHECKLIST } from "../../../../library/routes"
 
@@ -14,11 +13,11 @@ type Props = {
 }
 
 const ChecklistDashboard: FC<Props> = ({ openCreateModal }) => {
-  const { data, isLoading} = useGetChecklistDashboardQuery()
+  const { data, isLoading} = useGetChecklistDashboardQuery({ limit: 5 })
   const [ completeChecklistItem, { isLoading: isCompleteLoading }] = useCompleteChecklistItemMutation()
   const [ deleteChecklistItem, { isLoading: isDeleteLoading }] = useDeleteChecklistItemMutation()
 
-  const [expanded, setExpanded] = useState(true)
+  const [expanded, setExpanded] = useState(false)
 
   const navigate = useNavigate()
 
@@ -43,7 +42,7 @@ const ChecklistDashboard: FC<Props> = ({ openCreateModal }) => {
         </div>
       </div>
       <div className={`well-content ${expanded ? 'open' : 'closed'}`}>
-        {data?.checklist_items?.map((checklistItem: ChecklistItem) => {
+        {data?.checklist_items?.map((checklistItem) => {
           return (
             <div key={checklistItem.id} className="checklist-item-row">
               <p className="checklist-title">{checklistItem.title}</p>

@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { CreateChecklistItemArg, CreateChecklistItemResponse, GetChecklistResponse } from './types'
+import { CompleteChecklistItemArg, CompleteChecklistItemResponse, DeleteChecklistItemArg, DeleteChecklistItemResponse, GetChecklistArg, GetChecklistResponse } from './types'
 import { RootState } from '../../store'
+import { CreateChecklistItemArg, CreateChecklistItemResponse } from './types'
 
 
 export const reducerPath = 'checklist'
@@ -9,7 +10,7 @@ const checklistApi = createApi({
   reducerPath,
   baseQuery: fetchBaseQuery({
     baseUrl: '/api/weddingplanner/',
-    prepareHeaders: (headers, {getState}) => {
+    prepareHeaders: (headers, { getState }) => {
       const rootState = getState() as RootState
       const accessToken = rootState.auth.accessToken
 
@@ -17,36 +18,58 @@ const checklistApi = createApi({
       headers.set('Authorization', `Bearer ${accessToken}`)
     }
   }),
-  tagTypes: ['Checklist'],
+  tagTypes: ['ChecklistDashboard'],
   endpoints: (builder) => ({
-    getChecklist: builder.query<GetChecklistResponse, void>({
-      query: () => ({
-        url: 'checklist',
+    getChecklistDashboard: builder.query<GetChecklistResponse, GetChecklistArg>({
+      query: ({ limit }) => ({
+        url: 'dashboard/checklist',
+        params: { limit }
       }),
-      providesTags: (result) => result
-      ?
-        [
-          ...result.map(({ id }) => ({ type: 'Checklist', id } as const)),
-          { type: 'Checklist', id: 'LIST' },
-        ]
-      :
-        [{ type: 'Checklist', id: 'LIST' }],
+      providesTags: ['ChecklistDashboard']
+    }),
+    completeChecklistItem: builder.mutation<CompleteChecklistItemResponse, CompleteChecklistItemArg>({
+      query: ({ id }) => {
+        return {
+          url: 'checklist/complete',
+          method: 'POST',
+          body: { checklist_item_id: id },
+        }
+      },
+      invalidatesTags: ['ChecklistDashboard']
     }),
     createChecklistItem: builder.mutation<CreateChecklistItemResponse, CreateChecklistItemArg>({
-      query: ({ title }) => {
+      query: ({ title, topPriority }) => {
         return {
           url: 'checklist/create',
           method: 'POST',
-          body: { title },
+          body: {
+            title,
+            top_priority: !!topPriority
+          }
         }
       },
-      invalidatesTags: [{ type: 'Checklist', id: 'LIST' }],
+      invalidatesTags: ['ChecklistDashboard']
+    }),
+    deleteChecklistItem: builder.mutation<DeleteChecklistItemResponse, DeleteChecklistItemArg>({
+      query: ({ id }) => {
+        return {
+          url: 'checklist/delete',
+          method: 'POST',
+          body: { checklist_item_id: id }
+        }
+      },
+      invalidatesTags: ['ChecklistDashboard']
     })
   })
 })
 
 
-export const { useGetChecklistQuery, useCreateChecklistItemMutation } = checklistApi
+export const {
+  useGetChecklistDashboardQuery,
+  useCompleteChecklistItemMutation,
+  useCreateChecklistItemMutation,
+  useDeleteChecklistItemMutation,
+} = checklistApi
 
 export const checklistReducer = checklistApi.reducer
 

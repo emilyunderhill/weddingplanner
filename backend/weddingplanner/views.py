@@ -86,7 +86,7 @@ class CheckListDashboard(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        max_count = 5
+        max_count = int(request.GET.get('limit', 5))
         user = request.user
         wedding = user.wedding
         all_checklist_items = wedding.checklist_items.all()
@@ -155,4 +155,3 @@ class deleteChecklistItem(APIView):
 
         checklist_item.delete()
         return Response({'success': True}, status.HTTP_200_OK)
-

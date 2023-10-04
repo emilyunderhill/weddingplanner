@@ -9,11 +9,27 @@ export type ChecklistItem = {
   updated_at: string,
 }
 
-export type CreateChecklistItemArg = {
+type CreateChecklistItemResponse = ChecklistItem
+type CreateChecklistItemArg = {
   title: string
   topPriority?: boolean
 }
 
-export type CreateChecklistItemResponse = ChecklistItem
+type GetChecklistArg = {
+  limit: number
+}
+type GetChecklistResponse = {
+  checklist_items: ChecklistItem[]
+  progress: number
+  has_more: boolean
+}
 
-export type GetChecklistResponse = ChecklistItem[]
+type CompleteChecklistItemResponse = {
+  success: boolean
+}
+type CompleteChecklistItemArg = {
+  id: number
+}
+
+type DeleteChecklistItemResponse = CompleteChecklistItemResponse
+type DeleteChecklistItemArg = CompleteChecklistItemArg

@@ -10,7 +10,7 @@ import { name as authKey } from './redux/auth/userSlice'
 import { UserState } from './redux/auth/types';
 import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 import checklistApi from './redux/checklist/checklistApi';
-import checklistDashboardApi from './redux/dashboard/checklistDashboardApi';
+import checklistDashboardApi from './redux/checklist/checklistApi';
 
 const history = createBrowserHistory()
 
