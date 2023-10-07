@@ -15,9 +15,12 @@ type CreateChecklistItemArg = {
   topPriority?: boolean
 }
 
-type GetChecklistArg = {
-  limit: number
+type GetFullChecklistResponse = {
+  open_checklist_items: ChecklistItem[]
+  closed_checklist_items: ChecklistItem[]
+  progress: number
 }
+
 type GetChecklistResponse = {
   checklist_items: ChecklistItem[]
   progress: number

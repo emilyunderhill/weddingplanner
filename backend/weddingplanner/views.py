@@ -43,9 +43,23 @@ class RetrieveCheckList(APIView):
         user = request.user
         wedding = user.wedding
         checklist_items = wedding.checklist_items.all()
-        checklist_items = ChecklistItemSerializer(checklist_items, many=True)
+        open_checklist_items = checklist_items.filter(status=1)
+        closed_checklist_items = checklist_items.filter(status=2)
 
-        return Response(checklist_items.data, status.HTTP_200_OK, content_type='application/json')
+        count_all_items = checklist_items.count()
+        count_closed_items = closed_checklist_items.count()
+        progress = (count_closed_items / count_all_items) * 100
+
+        open_checklist_items_response = ChecklistItemSerializer(open_checklist_items, many=True)
+        closed_checklist_items_response = ChecklistItemSerializer(closed_checklist_items, many=True)
+
+        response = {
+            'open_checklist_items': open_checklist_items_response.data,
+            'closed_checklist_items': closed_checklist_items_response.data,
+            'progress': progress
+        }
+
+        return Response(response, status.HTTP_200_OK, content_type='application/json')
 
 class CreateCheckListItem(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -86,7 +100,7 @@ class CheckListDashboard(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        max_count = int(request.GET.get('limit', 5))
+        max_count = 5
         user = request.user
         wedding = user.wedding
         all_checklist_items = wedding.checklist_items.all()

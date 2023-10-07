@@ -8,83 +8,93 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useNavigate } from "react-router-dom";
 import { ROUTE_CHECKLIST } from "../../../../library/routes"
 import { ChecklistItem } from "../../../../redux/checklist/types"
+import Well from "../../../../components/Well"
 
 type Props = {
   openCreateModal: () => void
 }
 
 const ChecklistDashboard: FC<Props> = ({ openCreateModal }) => {
-  const { data, isLoading} = useGetChecklistDashboardQuery({ limit: 5 })
-  const [ completeChecklistItem, { isLoading: isCompleteLoading }] = useCompleteChecklistItemMutation()
-  const [ deleteChecklistItem, { isLoading: isDeleteLoading }] = useDeleteChecklistItemMutation()
+  const { data, isLoading } = useGetChecklistDashboardQuery()
+  const [completeChecklistItem, { isLoading: isCompleteLoading }] = useCompleteChecklistItemMutation()
+  const [deleteChecklistItem, { isLoading: isDeleteLoading }] = useDeleteChecklistItemMutation()
 
   const [expanded, setExpanded] = useState(false)
 
   const navigate = useNavigate()
 
-  const icon = expanded ?
-    <FontAwesomeIcon icon={solid("chevron-down")} /> :
-    <FontAwesomeIcon icon={solid("chevron-right")} />
-
-  return (
-    <div className="well-container">
-      <div className={`well-header ${expanded ? 'open' : ''}`}>
-        <Button
-          action={() => setExpanded(!expanded)}
-          content={icon}
-          variant="link"
-        />
-        <h2>Checklist</h2>
-        <div className="ml-sm">
-          <FontAwesomeIcon icon={solid("list-check")} />
-        </div>
-        <div className="ml-auto">
-          <ProgressCircle percentage={data?.progress ?? 0} size={30} strokeWidth={5} label={true} />
-        </div>
+  const heading = (
+    <>
+      <h2>Checklist</h2>
+      <div className="ml-sm">
+        <FontAwesomeIcon icon={solid("list-check")} />
       </div>
-      <div className={`well-content ${expanded ? 'open' : ''}`}>
-          {data?.checklist_items?.map((checklistItem: ChecklistItem) => {
-            return (
-              <div key={checklistItem.id} className="checklist-item-row">
-                <p className="checklist-title">{checklistItem.title}</p>
-                <div className="ml-auto flex-row">
-                  <Button
-                    action={() => completeChecklistItem({id: checklistItem.id})}
-                    content={<FontAwesomeIcon icon={solid("check")} />}
-                    variant="link"
-                    isLoading={isCompleteLoading}
-                  />
-                  <Button
-                    action={() => deleteChecklistItem({id: checklistItem.id})}
-                    content={<FontAwesomeIcon icon={regular("trash-can")} />}
-                    variant="link-destructive"
-                    isLoading={isDeleteLoading}
-                  />
-                </div>
-              </div>
-            )
-          })}
-        {!!data?.has_more && (
+      <div className="ml-auto mr-sm">
+        <ProgressCircle percentage={data?.progress ?? 0} size={30} strokeWidth={5} label={true} />
+      </div>
+    </>
+  )
+
+  const content = (
+    <>
+
+      {data?.checklist_items?.map((checklistItem: ChecklistItem) => {
+        return (
+          <div key={checklistItem.id} className="checklist-item-row">
+            <p className="checklist-title">{checklistItem.title}</p>
+            <div className="ml-auto flex-row">
+              <Button
+                action={() => completeChecklistItem({ id: checklistItem.id })}
+                content={<FontAwesomeIcon icon={solid("check")} />}
+                variant="link"
+                isLoading={isCompleteLoading}
+              />
+              <Button
+                action={() => deleteChecklistItem({ id: checklistItem.id })}
+                content={<FontAwesomeIcon icon={regular("trash-can")} />}
+                variant="link-destructive"
+                isLoading={isDeleteLoading}
+              />
+            </div>
+          </div>
+        )
+      })}
+      {
+        !!data?.has_more && (
           <div className="checklist-item-row">
             <p className="helpertext">{data.has_more} more...</p>
           </div>
-        )}
-        <div className="well-footer">
-          <Button
-            action={openCreateModal}
-            content={<FontAwesomeIcon icon={solid("plus")} />}
-            variant="link"
-          />
-          <div className="ml-auto">
-            <Button
-              action={() => navigate(ROUTE_CHECKLIST)}
-              content="View all"
-              variant="link"
-            />
-          </div>
-        </div>
+        )
+      }
+    </>
+  )
+
+  const footer = (
+    <>
+      <Button
+        action={openCreateModal}
+        content={<FontAwesomeIcon icon={solid("plus")} />}
+        variant="link"
+      />
+      <div className="ml-auto">
+        <Button
+          action={() => navigate(ROUTE_CHECKLIST)}
+          content="View all"
+          variant="link"
+        />
       </div>
-    </div>
+    </>
+  )
+
+  return (
+    <Well
+      expanded={expanded}
+      heading={heading}
+      setExpanded={setExpanded}
+      content={content}
+      footer={footer}
+    />
+
   )
 }
 

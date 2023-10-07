@@ -1,16 +1,13 @@
-import { Transform, createTransform, getStoredState, persistReducer, persistStore } from 'redux-persist'
+import { getStoredState, persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/es/storage'
 import { apiMiddleware } from 'redux-api-middleware';
 import { configureStore } from '@reduxjs/toolkit'
-import { createFilter } from 'redux-persist-transform-filter';
 import { routerMiddleware } from 'react-router-redux'
 import rootReducer from './reducers'
 import { History, createBrowserHistory } from 'history';
 import { name as authKey } from './redux/auth/userSlice'
-import { UserState } from './redux/auth/types';
 import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 import checklistApi from './redux/checklist/checklistApi';
-import checklistDashboardApi from './redux/checklist/checklistApi';
 
 const history = createBrowserHistory()
 
@@ -35,7 +32,6 @@ const initStore = (history: History) => {
       serializableCheck: false
     }).concat(
         checklistApi.middleware,
-        checklistDashboardApi.middleware,
         apiMiddleware,
         routerMiddleware(history),
       ),
@@ -46,9 +42,7 @@ const initStore = (history: History) => {
   return store
 }
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof rootReducer>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = ReturnType<typeof initStore>["dispatch"]
 
 export default initStore(history)
