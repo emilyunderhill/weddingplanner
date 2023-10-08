@@ -1,8 +1,17 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { CompleteChecklistItemArg, CompleteChecklistItemResponse, DeleteChecklistItemArg, DeleteChecklistItemResponse, GetChecklistResponse, GetFullChecklistResponse } from './types'
+import {
+  CompleteChecklistItemArg,
+  CompleteChecklistItemResponse,
+  DeleteChecklistItemArg,
+  DeleteChecklistItemResponse,
+  GetChecklistResponse,
+  GetFullChecklistResponse,
+  RenameChecklistItemResponse,
+  RenameChecklistItemArg,
+  CreateChecklistItemArg,
+  CreateChecklistItemResponse
+} from './types'
 import { RootState } from '../../store'
-import { CreateChecklistItemArg, CreateChecklistItemResponse } from './types'
-
 
 export const reducerPath = 'checklist'
 
@@ -42,6 +51,16 @@ const checklistApi = createApi({
       },
       invalidatesTags: ['Checklist', 'Dashboard']
     }),
+    reopenChecklistItem: builder.mutation<CompleteChecklistItemResponse, CompleteChecklistItemArg>({
+      query: ({ id }) => {
+        return {
+          url: 'checklist/reopen',
+          method: 'POST',
+          body: { checklist_item_id: id },
+        }
+      },
+      invalidatesTags: ['Checklist', 'Dashboard']
+    }),
     createChecklistItem: builder.mutation<CreateChecklistItemResponse, CreateChecklistItemArg>({
       query: ({ title, topPriority }) => {
         return {
@@ -64,6 +83,19 @@ const checklistApi = createApi({
         }
       },
       invalidatesTags: ['Checklist', 'Dashboard']
+    }),
+    renameChecklistItem: builder.mutation<RenameChecklistItemResponse, RenameChecklistItemArg>({
+      query: ({ id, title }) => {
+        return {
+          url: 'checklist/rename',
+          method: 'POST',
+          body: {
+            checklist_item_id: id,
+            title,
+          }
+        }
+      },
+      invalidatesTags: ['Dashboard', 'Checklist']
     })
   })
 })
@@ -75,6 +107,8 @@ export const {
   useCompleteChecklistItemMutation,
   useCreateChecklistItemMutation,
   useDeleteChecklistItemMutation,
+  useRenameChecklistItemMutation,
+  useReopenChecklistItemMutation,
 } = checklistApi
 
 export const checklistReducer = checklistApi.reducer

@@ -47,8 +47,8 @@ class UserSerializer(serializers.ModelSerializer):
 class ChecklistItemSerializer(serializers.ModelSerializer):
     created_by = UserSerializer(read_only=True)
     updated_by = UserSerializer(read_only=True)
-    created_at = serializers.DateTimeField(read_only=True, format="%Y-%m-%d")
-    updated_at = serializers.DateTimeField(read_only=True, format="%Y-%m-%d")
+    created_at = serializers.DateTimeField(read_only=True, format="%d %m %Y %H:%M")
+    updated_at = serializers.DateTimeField(read_only=True, format="%d %m %Y %H:%M")
 
     class Meta:
         model = ChecklistItem
@@ -62,7 +62,3 @@ class ChecklistItemSerializer(serializers.ModelSerializer):
 
         checklist_item = ChecklistItem.objects.create(**validated_data)
         return checklist_item
-
-class ChecklistDashboardSerializer(serializers.Serializer):
-    checklist_items = ChecklistItemSerializer(default=[], many=True, read_only=True)
-    progress = serializers.IntegerField(default=0, read_only=True)

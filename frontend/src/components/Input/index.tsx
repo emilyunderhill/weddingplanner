@@ -4,13 +4,14 @@ import { ValidationError } from "../../redux/auth/types"
 
 type Props<T> = {
   name: string
-  label: string
-  labelPosition: 'top' | 'left'
+  label?: string
+  labelPosition?: 'top' | 'left'
   value: T
   onChange: (value: T) => void
   type?: string
   errors?: Record<string, any>
   placeholder?: string
+  hidden?: boolean
 }
 
 type T = string | number
@@ -23,7 +24,8 @@ const Input: FC<Props<T>> = ({
   onChange,
   type,
   errors,
-  placeholder
+  placeholder,
+  hidden,
 }) => {
   const [errorData, setErrorData] = useState<undefined | string[]>(undefined)
 
@@ -41,15 +43,17 @@ const Input: FC<Props<T>> = ({
   }
 
   return (
-    <div className={`w-full ${labelPosition === 'top' ? 'flex-column' : 'flex-row'}`}>
-      <p className="mb-0 pb-0 mr-med">
-        {label}
-      </p>
+    <div className={`w-full ${labelPosition && labelPosition === 'top' ? 'flex-column' : 'flex-row'}`}>
+      {!!label && (
+        <p className="mb-0 pb-0 mr-med">
+          {label}
+        </p>
+      )}
       <input
         value={value}
         onChange={handleOnChange}
         type={type}
-        className={`input ${errorData ? 'input-error' : ''}`}
+        className={`input ${errorData ? 'input-error' : ''} ${hidden ? 'hidden' : ''}`}
         placeholder={placeholder}
       />
       {!!errorData && (

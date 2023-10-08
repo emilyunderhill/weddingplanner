@@ -9,6 +9,10 @@ export type ChecklistItem = {
   updated_at: string,
 }
 
+type GenericSuccessResponse = {
+  success: boolean
+}
+
 type CreateChecklistItemResponse = ChecklistItem
 type CreateChecklistItemArg = {
   title: string
@@ -27,12 +31,18 @@ type GetChecklistResponse = {
   has_more: boolean
 }
 
-type CompleteChecklistItemResponse = {
-  success: boolean
-}
+type CompleteChecklistItemResponse = GenericSuccessResponse
 type CompleteChecklistItemArg = {
   id: number
 }
 
-type DeleteChecklistItemResponse = CompleteChecklistItemResponse
-type DeleteChecklistItemArg = CompleteChecklistItemArg
+type DeleteChecklistItemResponse = GenericSuccessResponse
+type DeleteChecklistItemArg = {
+  id: number
+}
+
+type RenameChecklistItemResponse = GenericSuccessResponse
+type RenameChecklistItemArg = {
+  id: number
+  title: string
+}
